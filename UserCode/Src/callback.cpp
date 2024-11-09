@@ -4,6 +4,7 @@
 
 #include "main.h"
 #include "remoteControlDevice.h"
+#include "canDevice.h"
 
 extern uint8_t rcRxBuf[RC_RX_BUF_SIZE];
 extern uint8_t rcRxData[RC_RX_DATA_SIZE];
@@ -28,4 +29,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
 	{
 		remoteControl.frameHandle();
 	}
+}
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
+{
+	canControllerRxHandle(hcan);
 }

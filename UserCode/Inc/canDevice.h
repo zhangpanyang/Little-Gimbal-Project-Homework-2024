@@ -8,4 +8,6 @@
 #include "can.h"
 #include "generalTools.h"
 
+void canControllerRxHandle(CAN_HandleTypeDef* hcan);
+
 #endif //CANDEVICE_H

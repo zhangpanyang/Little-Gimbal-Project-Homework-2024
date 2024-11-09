@@ -15,3 +15,8 @@ state()
 	targetSpeed = 0;
 	lastAngleInt = 0;
 }
+
+void Motor::controllerRxHandle(uint8_t* data)
+{
+
+}

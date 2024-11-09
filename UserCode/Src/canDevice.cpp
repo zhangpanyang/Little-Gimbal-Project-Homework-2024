@@ -4,6 +4,8 @@
 
 #include "canDevice.h"
 
+#include "motorDevice.h"
+
 void canDeviceInit()
 {
 	CAN_FilterTypeDef filterConfig = {
@@ -38,10 +40,24 @@ CAN_TxHeaderTypeDef motorTxHeader5678={
 	.DLC = 8,
 	.TransmitGlobalTime = DISABLE
 };
-uint32_t txMailbox;
-uint8_t txData[8];
+uint32_t canTxMailbox;
+uint8_t canTxData[8];
 
-void canDeviceSendCurrent()
+CAN_RxHeaderTypeDef canRxHeader;
+uint8_t canRxData[8];
+
+Motor* canMotorList[2][8];
+uint8_t canMotorCnt[2];
+
+void canControllerRxHandle(CAN_HandleTypeDef* hcan)
+{
+	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader, canRxData);
+	uint8_t canLine;
+	if(hcan == &hcan1) canLine = 1;
+	if(hcan == &hcan2) canLine = 2;
+
+}
+void canControllerSendCurrent()
 {
 
 }
