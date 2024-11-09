@@ -22,7 +22,7 @@ void Motor::controllerRxHandle(uint8_t* data)
 {
 	feedback.angle = data[0]<<8 | data[1];
 	feedback.speed = data[2]<<8 | data[3];
-	feedback.moment = data[4]<<8 | data[5];
+	// feedback.moment = data[4]<<8 | data[5];
 	feedback.temp = data[6];
 }
 
