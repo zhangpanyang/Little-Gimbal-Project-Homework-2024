@@ -7,7 +7,7 @@
 
 void cppMain()
 {
-	remoteControlInit();
+	remoteControlDeviceInit();
 	while (1)
 	{
 

@@ -4,6 +4,15 @@
 
 #include "generalTools.h"
 
+#define INRANGE(NUM, MIN, MAX)\
+{\
+if(NUM<MIN){\
+NUM=MIN;\
+}else if(NUM>MAX){\
+NUM=MAX;\
+}\
+}
+
 float linearMappingInt2Float(int in, int in_min, int in_max, float out_min, float out_max)
 {
 	return (out_max - out_min) * (float)(in - in_min) / (float)(in_max - in_min) + out_min;

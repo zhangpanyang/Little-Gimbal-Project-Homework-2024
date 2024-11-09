@@ -56,6 +56,6 @@ public:
 
 enum {RC_KEY_W, RC_KEY_S, RC_KEY_A, RC_KEY_D, RC_KEY_Q, RC_KEY_E, RC_KEY_SHIFT, RC_KEY_CTRL};
 
-void remoteControlInit();
+void remoteControlDeviceInit();
 
 #endif //REMOTECONTROLDEVICE_H

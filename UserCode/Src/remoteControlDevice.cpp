@@ -18,7 +18,7 @@ void RemoteControl::init()
 }
 
 RemoteControl remoteControl;
-void remoteControlInit()
+void remoteControlDeviceInit()
 {
 	__HAL_UART_ENABLE_IT(&huart3, UART_IT_IDLE);
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart3, rcRxBuf, RC_RX_BUF_SIZE);
