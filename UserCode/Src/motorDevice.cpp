@@ -81,11 +81,9 @@ void motorDeviceRoutine()
 	{
 		for(uint8_t motorId = 1; motorId <= 8; motorId++)
 		{
-			if(motorList[canLine-1][motorId-1] != nullptr)
-			{
-				motorList[canLine-1][motorId-1]->updateState();
-				motorList[canLine-1][motorId-1]->updateControl();
-			}
+			if(motorList[canLine-1][motorId-1] == nullptr) continue;
+			motorList[canLine-1][motorId-1]->updateState();
+			motorList[canLine-1][motorId-1]->updateControl();
 		}
 	}
 }

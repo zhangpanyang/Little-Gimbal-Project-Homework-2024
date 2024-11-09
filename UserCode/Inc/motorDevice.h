@@ -71,5 +71,7 @@ public:
 private:
 	int16_t lastFeedbackAngle;
 };
+void motorDeviceInit();
+void motorDeviceRoutine();
 
 #endif //MOTORDEVICE_H

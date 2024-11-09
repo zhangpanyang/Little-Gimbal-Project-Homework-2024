@@ -4,6 +4,8 @@
 
 #include "canDevice.h"
 
+#include <cstring>
+
 #include "motorDevice.h"
 
 void canDeviceInit()
@@ -41,7 +43,6 @@ CAN_TxHeaderTypeDef motorTxHeader5678={
 	.TransmitGlobalTime = DISABLE
 };
 uint32_t canTxMailbox;
-uint8_t canTxData[8];
 
 CAN_RxHeaderTypeDef canRxHeader;
 uint8_t canRxData[8];
@@ -57,20 +58,23 @@ void canControllerRxHandle(CAN_HandleTypeDef* hcan)
 	uint8_t motorId = canRxHeader.StdId - 0x200;
 	motorList[canLine-1][motorId-1]->controllerRxHandle(canRxData);
 }
-void canControllerSendCurrent()
-{
 
-}
-void SetMotorCurrent(float current)
+uint8_t canTxData[4][8];
+void canDeviceRoutine() // Attention! The "canLine" and "motorId" is 1 less than the real value!
 {
-	if(current > 0.2 || current < -0.2)
+	memset(canTxData, 0, sizeof(canTxData));
+	for(uint8_t canLine = 0; canLine < 2; canLine++)
 	{
-		return;
+		for(uint8_t motorId = 0; motorId < 8; motorId++)
+		{
+			if(motorList[canLine][motorId] == nullptr) continue;
+			int16_t currentData = linearMappingFloat2Int(motorList[canLine][motorId]->control.outputIntensity, -20.0f, 20.0f, -16384, 16384);
+			canTxData[ (canLine << 1) + (motorId >> 2) ][ (motorId & 0x03) << 1 ] = currentData >> 8;
+			canTxData[ (canLine << 1) + (motorId >> 2) ][ (motorId & 0x03) << 1 | 1 ] = currentData & 0xff;
+		}
 	}
-	int currentData = linearMappingFloat2Int(current, -20.0f, 20.0f, -16384, 16384);
-	for (int i = 0; i < 8; i++)
-	{
-		txData[i] = (i&1) ? (currentData>>8) : (currentData&0xff);
-	}
-	HAL_CAN_AddTxMessage(&hcan1, &txHeader, txData, &txMailbox);
+	HAL_CAN_AddTxMessage(&hcan1, &motorTxHeader1234, canTxData[0], &canTxMailbox);
+	HAL_CAN_AddTxMessage(&hcan1, &motorTxHeader5678, canTxData[1], &canTxMailbox);
+	HAL_CAN_AddTxMessage(&hcan2, &motorTxHeader1234, canTxData[2], &canTxMailbox);
+	HAL_CAN_AddTxMessage(&hcan2, &motorTxHeader5678, canTxData[3], &canTxMailbox);
 }
