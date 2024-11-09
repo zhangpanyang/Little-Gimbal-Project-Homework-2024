@@ -40,6 +40,7 @@ typedef struct
 	float feedForward;
 
 	float outputIntensity;
+	uint8_t stopFlag;
 } motorControl_t;
 
 typedef struct
@@ -65,6 +66,7 @@ public:
 	explicit Motor(motorInit_t* motorInit);
 	void controllerRxHandle(uint8_t* data);
 	void updateState();
+	void updateControl();
 
 private:
 	int16_t lastFeedbackAngle;

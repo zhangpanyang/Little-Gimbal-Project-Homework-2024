@@ -19,7 +19,8 @@ Motor::Motor(motorInit_t* motorInit)
 		.pidAngle = *motorInit->pidAngle,
 		.pidSpeed = *motorInit->pidSpeed,
 		.targetAngle = 0,
-		.targetSpeed = 0
+		.targetSpeed = 0,
+		.stopFlag = 0
 	};
 	state = {0, 0, 0, 0};
 	feedback = {0, 0, 0};
@@ -56,6 +57,17 @@ void Motor::updateState()
 	state.angle = state.angleInt * 0.0439453125f / reductionRatio;// * 360.0f / 8192.0f
 }
 
+void Motor::updateControl()
+{
+	if (control.stopFlag)
+	{
+		control.outputIntensity = 0;
+		return;
+	}
+	control.targetSpeed = control.pidAngle.compute(control.targetAngle, state.angle, 0.001);
+	control.outputIntensity = control.pidSpeed.compute(control.targetSpeed, state.speed, 0.001) + control.feedForward;
+}
+
 void motorDeviceInit()
 {
 	for(uint8_t canLine = 1; canLine <= 2; canLine++)
@@ -72,7 +84,7 @@ void motorDeviceRoutine()
 			if(motorList[canLine-1][motorId-1] != nullptr)
 			{
 				motorList[canLine-1][motorId-1]->updateState();
-
+				motorList[canLine-1][motorId-1]->updateControl();
 			}
 		}
 	}
