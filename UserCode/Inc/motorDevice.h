@@ -13,7 +13,7 @@ typedef struct
 	int16_t angle;
 	int16_t speed;
 	// int16_t moment;
-	int16_t temp;
+	int16_t temperature;
 } controllerRx_t;
 
 typedef struct
@@ -27,7 +27,6 @@ typedef struct
 	float speed; //dps
 	int32_t angleInt; //8192
 	float angle; //degree
-	// float moment;
 	float temperature;
 } motorState_t;
 
@@ -55,7 +54,7 @@ public:
 	void updateState();
 
 private:
-	uint32_t lastAngleInt;
+	uint16_t lastFeedbackAngle;
 };
 
 #endif //MOTORDEVICE_H
