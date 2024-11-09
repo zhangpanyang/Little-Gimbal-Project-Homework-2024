@@ -37,6 +37,9 @@ typedef struct
 
 	PID pidSpeed;
 	PID pidAngle;
+	float feedForward;
+
+	float outputIntensity;
 } motorControl_t;
 
 typedef struct
@@ -47,6 +50,7 @@ typedef struct
 	float reductionRatio;
 	PID* pidSpeed;
 	PID* pidAngle;
+	float feedForward;
 } motorInit_t;
 
 class Motor
@@ -63,7 +67,7 @@ public:
 	void updateState();
 
 private:
-	uint16_t lastFeedbackAngle;
+	int16_t lastFeedbackAngle;
 };
 
 #endif //MOTORDEVICE_H

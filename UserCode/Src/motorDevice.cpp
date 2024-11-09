@@ -14,6 +14,8 @@ Motor::Motor(motorInit_t* motorInit)
 	};
 	reductionRatio = motorInit->reductionRatio;
 	control = {
+		.feedForward = motorInit->feedForward,
+		.outputIntensity = 0,
 		.pidAngle = *motorInit->pidAngle,
 		.pidSpeed = *motorInit->pidSpeed,
 		.targetAngle = 0,
@@ -37,7 +39,7 @@ void Motor::updateState()
 	state.speed = feedback.speed / reductionRatio;
 	state.temperature = feedback.temperature;
 
-	int32_t thisAngle = feedback.angle;
+	int16_t thisAngle = feedback.angle;
 	if (thisAngle <= lastFeedbackAngle) {
 		if (lastFeedbackAngle - thisAngle > 4096)
 			state.angleInt += (thisAngle + 8192 - lastFeedbackAngle);
@@ -68,7 +70,10 @@ void motorDeviceRoutine()
 		for(uint8_t motorId = 1; motorId <= 8; motorId++)
 		{
 			if(motorList[canLine-1][motorId-1] != nullptr)
+			{
 				motorList[canLine-1][motorId-1]->updateState();
+
+			}
 		}
 	}
 }
