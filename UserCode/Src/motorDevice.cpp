@@ -6,16 +6,23 @@
 
 Motor* motorList[2][8];
 
-Motor::Motor(motorInit_t* motorInit) :
-	pidSpeed(*(motorInit->pidAngle)),
-	pidAngle(*(motorInit->pidSpeed)),
-	feedback(),
-	state(),
-	reductionRatio(motorInit->reductionRatio),
-	targetAngle(0),
-	targetSpeed(0),
-	lastFeedbackAngle(0)
-{}
+Motor::Motor(motorInit_t* motorInit)
+{
+	hardwareInfo = {
+		.canLine = motorInit->canLine,
+		.controllerId = motorInit->controllerId
+	};
+	reductionRatio = motorInit->reductionRatio;
+	control = {
+		.pidAngle = *motorInit->pidAngle,
+		.pidSpeed = *motorInit->pidSpeed,
+		.targetAngle = 0,
+		.targetSpeed = 0
+	};
+	state = {0, 0, 0, 0};
+	feedback = {0, 0, 0};
+	lastFeedbackAngle = 0;
+}
 
 void Motor::controllerRxHandle(uint8_t* data)
 {

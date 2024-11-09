@@ -32,6 +32,18 @@ typedef struct
 
 typedef struct
 {
+	float targetSpeed;
+	float targetAngle;
+
+	PID pidSpeed;
+	PID pidAngle;
+} motorControl_t;
+
+typedef struct
+{
+	uint8_t canLine;
+	uint8_t controllerId;
+
 	float reductionRatio;
 	PID* pidSpeed;
 	PID* pidAngle;
@@ -41,13 +53,10 @@ class Motor
 {
 public:
 	float reductionRatio;
-	float targetSpeed;
-	float targetAngle;
-
-	PID pidSpeed;
-	PID pidAngle;
+	motorHardwareInfo_t hardwareInfo;
 	controllerRx_t feedback;
 	motorState_t state;
+	motorControl_t control;
 
 	explicit Motor(motorInit_t* motorInit);
 	void controllerRxHandle(uint8_t* data);
