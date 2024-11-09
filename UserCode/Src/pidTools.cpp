@@ -4,6 +4,8 @@
 
 #include "pidTools.h"
 
+PID::PID(): Kp(0), Ki(0), Kd(0), outputMax(0), pMax(0), integralMax(0), prevError(0), integral(0) {}
+
 PID::PID(PIDInitializer* initializer)
 {
 	Kp = initializer->Kp;

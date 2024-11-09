@@ -29,6 +29,7 @@ public:
 	float prevError;  // 前一次误差
 	float integral;   // 积分项累积
 
+	PID();
 	explicit PID(PIDInitializer* initializer);
 	float compute(float controlValue, float actualValue, float deltaTime);
 
