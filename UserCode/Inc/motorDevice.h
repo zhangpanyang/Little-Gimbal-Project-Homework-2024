@@ -33,7 +33,7 @@ typedef struct
 
 typedef struct
 {
-	float reductionAngle;
+	float reductionRatio;
 	PID* pidSpeed;
 	PID* pidAngle;
 } motorInit_t;
