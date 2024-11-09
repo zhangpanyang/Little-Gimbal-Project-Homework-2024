@@ -5,6 +5,15 @@
 #ifndef GENERALTOOLS_H
 #define GENERALTOOLS_H
 
+#define INRANGE(NUM, MIN, MAX)\
+{\
+if(NUM<MIN){\
+NUM=MIN;\
+}else if(NUM>MAX){\
+NUM=MAX;\
+}\
+}
+
 float linearMappingInt2Float(int in,int in_min,int in_max,float out_min,float out_max);
 int linearMappingFloat2Int(float in,float in_min,float in_max,int out_min,int out_max);
 
