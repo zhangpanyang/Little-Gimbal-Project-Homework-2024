@@ -45,7 +45,7 @@ private:
 
 public:
 
-	RCChannel  channel_;
+	RCChannel channel_;
 	RCSwitch switch_;
 	RCMouse mouse_;
 	uint8_t keys_;
