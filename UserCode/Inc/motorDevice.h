@@ -16,8 +16,14 @@ typedef struct
 	int16_t temp;
 } controllerRx_t;
 
-typedef struct {
+typedef struct
+{
+	uint8_t canLine;
+	uint8_t controllerId;
+} motorHardwareInfo_t;
 
+typedef struct
+{
 	float speed; //dps
 	int32_t angleInt; //8192
 	float angle; //degree
@@ -25,6 +31,13 @@ typedef struct {
 	float temperature;
 
 } motorState_t;
+
+typedef struct
+{
+	float reductionAngle;
+	PID* pidSpeed;
+	PID* pidAngle;
+} motorInit_t;
 
 class Motor
 {
@@ -38,7 +51,7 @@ public:
 	controllerRx_t feedback;
 	motorState_t state;
 
-	Motor();
+	explicit Motor(motorInit_t* motorInit);
 
 private:
 	uint32_t lastAngleInt;

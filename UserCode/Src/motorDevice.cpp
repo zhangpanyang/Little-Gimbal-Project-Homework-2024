@@ -3,3 +3,15 @@
 //
 
 #include "motorDevice.h"
+
+Motor::Motor(motorInit_t* motorInit) :
+pidSpeed(*(motorInit->pidAngle)),
+pidAngle(*(motorInit->pidSpeed)),
+feedback(),
+state()
+{
+	reductionRatio = motorInit->reductionAngle;
+	targetAngle = 0;
+	targetSpeed = 0;
+	lastAngleInt = 0;
+}
