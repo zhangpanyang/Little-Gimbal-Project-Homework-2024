@@ -3,11 +3,14 @@
 //
 
 #include "cppMain.h"
+
+#include "canDevice.h"
 #include "remoteControlDevice.h"
 
 void cppMain()
 {
 	remoteControlDeviceInit();
+	canDeviceInit();
 	while (1)
 	{
 

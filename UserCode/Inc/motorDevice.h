@@ -53,6 +53,7 @@ public:
 
 	explicit Motor(motorInit_t* motorInit);
 	void controllerRxHandle(uint8_t* data);
+	void updateState();
 
 private:
 	uint32_t lastAngleInt;

@@ -34,7 +34,7 @@ CAN_TxHeaderTypeDef motorTxHeader1234={
 };
 CAN_TxHeaderTypeDef motorTxHeader5678={
 	.StdId = 0x200,
-	.ExtId = 0x200,
+	.ExtId = 0x1FF,
 	.IDE = CAN_ID_STD,
 	.RTR = CAN_RTR_DATA,
 	.DLC = 8,
@@ -46,8 +46,7 @@ uint8_t canTxData[8];
 CAN_RxHeaderTypeDef canRxHeader;
 uint8_t canRxData[8];
 
-Motor* canMotorList[2][8];
-uint8_t canMotorCnt[2];
+extern Motor* motorList[2][8];
 
 void canControllerRxHandle(CAN_HandleTypeDef* hcan)
 {
@@ -55,7 +54,8 @@ void canControllerRxHandle(CAN_HandleTypeDef* hcan)
 	uint8_t canLine;
 	if(hcan == &hcan1) canLine = 1;
 	if(hcan == &hcan2) canLine = 2;
-
+	uint8_t motorId = canRxHeader.StdId - 0x200;
+	motorList[canLine-1][motorId-1]->controllerRxHandle(canRxData);
 }
 void canControllerSendCurrent()
 {
