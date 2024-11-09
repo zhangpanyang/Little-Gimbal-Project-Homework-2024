@@ -3,9 +3,11 @@
 //
 
 #include "cppMain.h"
+#include "remoteControlDevice.h"
 
 void cppMain()
 {
+	remoteControlInit();
 	while (1)
 	{
 
