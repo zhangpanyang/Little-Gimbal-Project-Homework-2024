@@ -12,6 +12,8 @@ extern "C"{
 	void cppMain();
 	void mainDeviceInit();
 	void mainDeviceRoutine();
+	void mainTaskInit();
+	void mainTaskRoutine();
 
 #ifdef __cplusplus
 }

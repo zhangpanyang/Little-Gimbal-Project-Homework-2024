@@ -67,6 +67,9 @@ public:
 	void controllerRxHandle(uint8_t* data);
 	void updateState();
 	void updateControl();
+	void setTargetAngle(float targetAngle);
+	void Stop();
+	void Start();
 
 private:
 	int16_t lastFeedbackAngle;

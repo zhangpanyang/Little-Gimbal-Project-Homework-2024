@@ -68,6 +68,22 @@ void Motor::updateControl()
 	control.outputIntensity = control.pidSpeed.compute(control.targetSpeed, state.speed, 0.001) + control.feedForward;
 }
 
+void Motor::setTargetAngle(float targetAngle)
+{
+	control.targetAngle = targetAngle;
+}
+void Motor::Stop()
+{
+	control.stopFlag = true;
+}
+void Motor::Start()
+{
+	control.stopFlag = false;
+}
+
+
+
+
 void motorDeviceInit()
 {
 }
