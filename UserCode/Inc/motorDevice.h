@@ -32,11 +32,11 @@ typedef struct
 
 typedef struct
 {
-	float targetSpeed;
 	float targetAngle;
+	float targetSpeed;
 
-	PID pidSpeed;
 	PID pidAngle;
+	PID pidSpeed;
 	float feedForward;
 
 	float outputIntensity;

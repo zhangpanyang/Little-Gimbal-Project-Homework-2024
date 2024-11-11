@@ -14,12 +14,12 @@ Motor::Motor(motorInit_t* motorInit)
 	};
 	reductionRatio = motorInit->reductionRatio;
 	control = {
-		.feedForward = motorInit->feedForward,
-		.outputIntensity = 0,
-		.pidAngle = *motorInit->pidAngle,
-		.pidSpeed = *motorInit->pidSpeed,
 		.targetAngle = 0,
 		.targetSpeed = 0,
+		.pidAngle = *motorInit->pidAngle,
+		.pidSpeed = *motorInit->pidSpeed,
+		.feedForward = motorInit->feedForward,
+		.outputIntensity = 0,
 		.stopFlag = 0
 	};
 	state = {0, 0, 0, 0};
