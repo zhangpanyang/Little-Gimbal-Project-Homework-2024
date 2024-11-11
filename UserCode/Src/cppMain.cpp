@@ -6,11 +6,26 @@
 
 #include "canDevice.h"
 #include "remoteControlDevice.h"
+#include "motorDevice.h"
+#include "tim.h"
 
-void cppMain()
+void mainDeviceInit()
 {
 	remoteControlDeviceInit();
 	canDeviceInit();
+	motorDeviceInit();
+	HAL_TIM_Base_Start_IT(&htim6);
+}
+
+void mainDeviceRoutine()
+{
+	motorDeviceRoutine();
+	canDeviceRoutine();
+}
+
+void cppMain()
+{
+	mainDeviceInit();
 	while (1)
 	{
 

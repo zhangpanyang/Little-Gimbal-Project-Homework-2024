@@ -4,7 +4,7 @@
 
 #include "motorDevice.h"
 
-Motor* motorList[2][8];
+Motor* motorList[2][8] = {nullptr};
 
 Motor::Motor(motorInit_t* motorInit)
 {
@@ -70,9 +70,6 @@ void Motor::updateControl()
 
 void motorDeviceInit()
 {
-	for(uint8_t canLine = 1; canLine <= 2; canLine++)
-		for(uint8_t motorId = 1; motorId <= 8; motorId++)
-			motorList[canLine-1][motorId-1] = nullptr;
 }
 
 void motorDeviceRoutine()

@@ -3,8 +3,10 @@
 //
 
 #include "main.h"
+#include "cppMain.h"
 #include "remoteControlDevice.h"
 #include "canDevice.h"
+#include "tim.h"
 
 extern uint8_t rcRxBuf[RC_RX_BUF_SIZE];
 extern uint8_t rcRxData[RC_RX_DATA_SIZE];
@@ -35,4 +37,12 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
 {
 	if(hcan == &hcan1 || hcan == &hcan2)
 		canControllerRxHandle(hcan);
+}
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
+{
+	if(htim == &htim6)
+	{
+		mainDeviceRoutine();
+	}
 }

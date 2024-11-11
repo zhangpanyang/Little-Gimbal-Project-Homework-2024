@@ -8,7 +8,11 @@
 #ifdef __cplusplus
 extern "C"{
 #endif
+
 	void cppMain();
+	void mainDeviceInit();
+	void mainDeviceRoutine();
+
 #ifdef __cplusplus
 }
 #endif

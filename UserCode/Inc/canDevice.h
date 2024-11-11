@@ -10,5 +10,6 @@
 
 void canDeviceInit();
 void canControllerRxHandle(CAN_HandleTypeDef* hcan);
+void canDeviceRoutine();
 
 #endif //CANDEVICE_H
