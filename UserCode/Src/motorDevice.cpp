@@ -71,7 +71,7 @@ void MotorSpeed::updateControl()
 		outputIntensity = 0;
 		return;
 	}
-	outputIntensity = controlSpeed.pid.compute(controlSpeed.targetValue, state.speed, 0.001) + controlSpeed.feedForward;
+	outputIntensity = controlSpeed.compute(state.speed, 0.001);
 }
 void MotorAngle::updateControl()
 {
@@ -80,8 +80,8 @@ void MotorAngle::updateControl()
 		outputIntensity = 0;
 		return;
 	}
-	controlSpeed.targetValue = controlAngle.pid.compute(controlAngle.targetValue, state.angle, 0.001) + controlAngle.feedForward;
-	outputIntensity = controlSpeed.pid.compute(controlSpeed.targetValue, state.speed, 0.001) + controlSpeed.feedForward;
+	controlSpeed.targetValue = controlAngle.compute(state.angle, 0.001);
+	outputIntensity = controlSpeed.compute(state.speed, 0.001);
 }
 
 void Motor::Stop()

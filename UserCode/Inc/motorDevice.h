@@ -35,6 +35,10 @@ typedef struct
 	float targetValue;
 	PID pid;
 	float feedForward;
+	float compute(float actualValue, float deltaTime)
+	{
+		return pid.compute(targetValue, actualValue, deltaTime) + feedForward;
+	}
 } motorControlUnit_t;
 
 class Motor
