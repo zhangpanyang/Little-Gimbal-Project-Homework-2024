@@ -17,12 +17,12 @@ void remoteControlTaskRoutine()
 {
 	if(remoteControl.switch_.r == DOWN_POS)
 	{
-		for(Motor* motorPtr : motorSet)
+		for(auto motorPtr : motorSet)
 			motorPtr->Stop();
 	}
 	else
 	{
-		for(Motor* motorPtr : motorSet)
+		for(auto motorPtr : motorSet)
 			motorPtr->Start();
 	}
 }

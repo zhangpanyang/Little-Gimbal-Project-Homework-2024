@@ -63,7 +63,7 @@ uint8_t canTxData[4][8];
 void canDeviceRoutine() // Attention! The "line" and "id" is 1 less than the real value!
 {
 	memset(canTxData, 0, sizeof(canTxData));
-	for(Motor* motorPtr : motorSet)
+	for(auto motorPtr : motorSet)
 	{
 		uint8_t line = motorPtr->hardwareInfo.canLine - 1;
 		uint8_t id = motorPtr->hardwareInfo.controllerId - 1;
