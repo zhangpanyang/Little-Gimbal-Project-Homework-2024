@@ -20,6 +20,7 @@ typedef struct
 	int16_t speed;
 	// int16_t moment;
 	int16_t temperature;
+	int16_t lastFeedbackAngle;
 } controllerRx_t;
 
 typedef struct
@@ -59,9 +60,6 @@ public:
 	virtual void updateControl();
 	void Stop();
 	void Start();
-
-protected:
-	int16_t lastFeedbackAngle;
 };
 
 class MotorSpeed : public Motor

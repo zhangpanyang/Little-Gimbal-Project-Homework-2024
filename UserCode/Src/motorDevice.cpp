@@ -7,7 +7,6 @@
 Motor::Motor(float pReductionRatio)
 {
 	reductionRatio = pReductionRatio;
-	lastFeedbackAngle = 0;
 	outputIntensity = 0;
 	stopFlag = 0;
 }
@@ -48,20 +47,20 @@ void Motor::updateState()
 	state.speed = feedback.speed / reductionRatio;
 	state.temperature = feedback.temperature;
 
-	int16_t thisAngle = feedback.angle;
-	if (thisAngle <= lastFeedbackAngle) {
-		if (lastFeedbackAngle - thisAngle > 4096)
-			state.angleInt += (thisAngle + 8192 - lastFeedbackAngle);
+	int16_t thisAngle = feedback.angle, lastAngle = feedback.lastFeedbackAngle;
+	if (thisAngle <= lastAngle) {
+		if (lastAngle - thisAngle > 4096)
+			state.angleInt += (thisAngle + 8192 - lastAngle);
 		else
-			state.angleInt -= (lastFeedbackAngle - thisAngle);
+			state.angleInt -= (lastAngle - thisAngle);
 	}
 	else {
-		if (thisAngle - lastFeedbackAngle > 4096)
-			state.angleInt -= (lastFeedbackAngle + 8192 - thisAngle);
+		if (thisAngle - lastAngle > 4096)
+			state.angleInt -= (lastAngle + 8192 - thisAngle);
 		else
-			state.angleInt += (thisAngle - lastFeedbackAngle);
+			state.angleInt += (thisAngle - lastAngle);
 	}
-	lastFeedbackAngle = thisAngle;
+	feedback.lastFeedbackAngle = thisAngle;
 	state.angle = state.angleInt * 0.0439453125f / reductionRatio;// * 360.0f / 8192.0f
 }
 
