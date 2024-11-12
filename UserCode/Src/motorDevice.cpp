@@ -87,6 +87,14 @@ void MotorAngle::updateControl()
 	controlSpeed.targetValue = controlAngle.compute(state.angle, 0.001);
 	outputIntensity = controlSpeed.compute(state.speed, 0.001);
 }
+void MotorSpeed::setSpeed(float speed)
+{
+	controlSpeed.targetValue = speed;
+}
+void MotorAngle::setAngle(float angle)
+{
+	controlAngle.targetValue = angle;
+}
 
 void Motor::Stop()
 {
