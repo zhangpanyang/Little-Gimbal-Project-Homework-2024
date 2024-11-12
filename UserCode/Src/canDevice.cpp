@@ -63,16 +63,16 @@ uint8_t canTxData[4][8];
 void canDeviceRoutine() // Attention! The "canLine" and "motorId" is 1 less than the real value!
 {
 	memset(canTxData, 0, sizeof(canTxData));
-	for(uint8_t canLine = 0; canLine < 2; canLine++)
-	{
-		for(uint8_t motorId = 0; motorId < 8; motorId++)
-		{
-			if(motorList[canLine][motorId] == nullptr) continue;
-			int16_t currentData = linearMappingFloat2Int(motorList[canLine][motorId]->control.outputIntensity, -20.0f, 20.0f, -16384, 16384);
-			canTxData[ (canLine << 1) + (motorId >> 2) ][ (motorId & 0x03) << 1 ] = currentData >> 8;
-			canTxData[ (canLine << 1) + (motorId >> 2) ][ (motorId & 0x03) << 1 | 1 ] = currentData & 0xff;
-		}
-	}
+	// for(uint8_t canLine = 0; canLine < 2; canLine++)
+	// {
+	// 	for(uint8_t motorId = 0; motorId < 8; motorId++)
+	// 	{
+	// 		if(motorList[canLine][motorId] == nullptr) continue;
+	// 		int16_t currentData = linearMappingFloat2Int(motorList[canLine][motorId]->control.outputIntensity, -20.0f, 20.0f, -16384, 16384);
+	// 		canTxData[ (canLine << 1) + (motorId >> 2) ][ (motorId & 0x03) << 1 ] = currentData >> 8;
+	// 		canTxData[ (canLine << 1) + (motorId >> 2) ][ (motorId & 0x03) << 1 | 1 ] = currentData & 0xff;
+	// 	}
+	// }
 	HAL_CAN_AddTxMessage(&hcan1, &motorTxHeader1234, canTxData[0], &canTxMailbox);
 	HAL_CAN_AddTxMessage(&hcan1, &motorTxHeader5678, canTxData[1], &canTxMailbox);
 	HAL_CAN_AddTxMessage(&hcan2, &motorTxHeader1234, canTxData[2], &canTxMailbox);

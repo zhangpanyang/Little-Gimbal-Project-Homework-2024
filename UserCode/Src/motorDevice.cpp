@@ -6,25 +6,31 @@
 
 Motor* motorList[2][8] = {nullptr};
 
-Motor::Motor(motorInit_t* motorInit)
+Motor::Motor(float pReductionRatio)
 {
-	hardwareInfo = {
-		.canLine = motorInit->canLine,
-		.controllerId = motorInit->controllerId
-	};
-	reductionRatio = motorInit->reductionRatio;
-	control = {
-		.targetAngle = 0,
-		.targetSpeed = 0,
-		.pidAngle = *motorInit->pidAngle,
-		.pidSpeed = *motorInit->pidSpeed,
-		.feedForward = motorInit->feedForward,
-		.outputIntensity = 0,
-		.stopFlag = 0
-	};
+	hardwareInfo = {0, 0};
+	reductionRatio = pReductionRatio;
 	state = {0, 0, 0, 0};
 	feedback = {0, 0, 0};
 	lastFeedbackAngle = 0;
+	outputIntensity = 0;
+	stopFlag = 0;
+}
+MotorSpeed::MotorSpeed(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed): Motor(pReductionRatio)
+{
+	controlSpeed = {
+		.targetValue = 0,
+		.pid = *pPidSpeed,
+		.feedForward = pFeedForwardSpeed,
+	};
+}
+MotorAngle::MotorAngle(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle) : MotorSpeed(pReductionRatio, pPidSpeed, pFeedForwardSpeed)
+{
+	controlAngle = {
+		.targetValue = 0,
+		.pid = *pPidAngle,
+		.feedForward = pFeedForwardAngle,
+	};
 }
 
 void Motor::controllerRxHandle(uint8_t* data)
@@ -59,30 +65,36 @@ void Motor::updateState()
 
 void Motor::updateControl()
 {
-	if (control.stopFlag)
+	outputIntensity = 0;
+}
+void MotorSpeed::updateControl()
+{
+	if (stopFlag)
 	{
-		control.outputIntensity = 0;
+		outputIntensity = 0;
 		return;
 	}
-	control.targetSpeed = control.pidAngle.compute(control.targetAngle, state.angle, 0.001);
-	control.outputIntensity = control.pidSpeed.compute(control.targetSpeed, state.speed, 0.001) + control.feedForward;
+	outputIntensity = controlSpeed.pid.compute(controlSpeed.targetValue, state.speed, 0.001) + controlSpeed.feedForward;
+}
+void MotorAngle::updateControl()
+{
+	if (stopFlag)
+	{
+		outputIntensity = 0;
+		return;
+	}
+	controlSpeed.targetValue = controlAngle.pid.compute(controlAngle.targetValue, state.angle, 0.001) + controlAngle.feedForward;
+	outputIntensity = controlSpeed.pid.compute(controlSpeed.targetValue, state.speed, 0.001) + controlSpeed.feedForward;
 }
 
-void Motor::setTargetAngle(float targetAngle)
-{
-	control.targetAngle = targetAngle;
-}
 void Motor::Stop()
 {
-	control.stopFlag = true;
+	stopFlag = true;
 }
 void Motor::Start()
 {
-	control.stopFlag = false;
+	stopFlag = false;
 }
-
-
-
 
 void motorDeviceInit()
 {

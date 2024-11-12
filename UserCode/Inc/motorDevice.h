@@ -32,48 +32,49 @@ typedef struct
 
 typedef struct
 {
-	float targetAngle;
-	float targetSpeed;
-
-	PID pidAngle;
-	PID pidSpeed;
+	float targetValue;
+	PID pid;
 	float feedForward;
-
-	float outputIntensity;
-	uint8_t stopFlag;
-} motorControl_t;
-
-typedef struct
-{
-	uint8_t canLine;
-	uint8_t controllerId;
-
-	float reductionRatio;
-	PID* pidSpeed;
-	PID* pidAngle;
-	float feedForward;
-} motorInit_t;
+} motorControlUnit_t;
 
 class Motor
 {
 public:
 	float reductionRatio;
-	motorHardwareInfo_t hardwareInfo;
-	controllerRx_t feedback;
-	motorState_t state;
-	motorControl_t control;
+	motorHardwareInfo_t hardwareInfo{};
+	controllerRx_t feedback{};
+	motorState_t state{};
+	float outputIntensity;
+	uint8_t stopFlag;
 
-	explicit Motor(motorInit_t* motorInit);
+	virtual ~Motor() = default;
+	explicit Motor(float pReductionRatio);
 	void controllerRxHandle(uint8_t* data);
 	void updateState();
-	void updateControl();
-	void setTargetAngle(float targetAngle);
+	virtual void updateControl();
 	void Stop();
 	void Start();
 
-private:
+protected:
 	int16_t lastFeedbackAngle;
 };
+
+class MotorSpeed : public Motor
+{
+public:
+	motorControlUnit_t controlSpeed;
+	MotorSpeed(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed);
+	void updateControl() override;
+};
+
+class  MotorAngle : public MotorSpeed
+{
+public:
+	motorControlUnit_t controlAngle;
+	MotorAngle(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle);
+	void updateControl() override;
+};
+
 void motorDeviceInit();
 void motorDeviceRoutine();
 
