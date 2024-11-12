@@ -4,8 +4,6 @@
 
 #include "motorDevice.h"
 
-Motor* motorList[2][8] = {nullptr};
-
 Motor::Motor(float pReductionRatio)
 {
 	reductionRatio = pReductionRatio;
@@ -139,19 +137,17 @@ Motor* MotorSet::getMotorById(uint8_t canLine, uint8_t controllerId)
 	return motorMap[canLine-1][controllerId-1];
 }
 
+MotorSet motorSet;
+
 void motorDeviceInit()
 {
 }
 
 void motorDeviceRoutine()
 {
-	for(uint8_t canLine = 1; canLine <= 2; canLine++)
+	for(auto motorPtr : motorSet)
 	{
-		for(uint8_t motorId = 1; motorId <= 8; motorId++)
-		{
-			if(motorList[canLine-1][motorId-1] == nullptr) continue;
-			motorList[canLine-1][motorId-1]->updateState();
-			motorList[canLine-1][motorId-1]->updateControl();
-		}
+		motorPtr->updateState();
+		motorPtr->updateControl();
 	}
 }

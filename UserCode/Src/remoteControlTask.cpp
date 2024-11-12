@@ -6,7 +6,7 @@
 #include "motorDevice.h"
 
 extern RemoteControl remoteControl;
-extern Motor* motorList[2][8];
+extern MotorSet motorSet;
 
 void remoteControlTaskInit()
 {
@@ -17,16 +17,12 @@ void remoteControlTaskRoutine()
 {
 	if(remoteControl.switch_.r == DOWN_POS)
 	{
-		for (uint8_t canLine = 1; canLine <=2; canLine++)
-			for (uint8_t motorId = 1; motorId <= 8; motorId++)
-				if(motorList[canLine-1][motorId-1] != nullptr)
-					motorList[canLine-1][motorId-1]->Stop();
+		for(Motor* motorPtr : motorSet)
+			motorPtr->Stop();
 	}
 	else
 	{
-		for (uint8_t canLine = 1; canLine <=2; canLine++)
-			for (uint8_t motorId = 1; motorId <= 8; motorId++)
-				if(motorList[canLine-1][motorId-1] != nullptr)
-					motorList[canLine-1][motorId-1]->Start();
+		for(Motor* motorPtr : motorSet)
+			motorPtr->Start();
 	}
 }

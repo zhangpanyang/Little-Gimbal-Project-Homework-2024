@@ -47,7 +47,7 @@ uint32_t canTxMailbox;
 CAN_RxHeaderTypeDef canRxHeader;
 uint8_t canRxData[8];
 
-extern Motor* motorList[2][8];
+extern MotorSet motorSet;
 
 void canControllerRxHandle(CAN_HandleTypeDef* hcan)
 {
@@ -55,24 +55,22 @@ void canControllerRxHandle(CAN_HandleTypeDef* hcan)
 	uint8_t canLine;
 	if(hcan == &hcan1) canLine = 1;
 	if(hcan == &hcan2) canLine = 2;
-	uint8_t motorId = canRxHeader.StdId - 0x200;
-	motorList[canLine-1][motorId-1]->controllerRxHandle(canRxData);
+	uint8_t controllerId = canRxHeader.StdId - 0x200;
+	motorSet.getMotorById(canLine, controllerId)->controllerRxHandle(canRxData);
 }
 
 uint8_t canTxData[4][8];
-void canDeviceRoutine() // Attention! The "canLine" and "motorId" is 1 less than the real value!
+void canDeviceRoutine() // Attention! The "line" and "id" is 1 less than the real value!
 {
 	memset(canTxData, 0, sizeof(canTxData));
-	// for(uint8_t canLine = 0; canLine < 2; canLine++)
-	// {
-	// 	for(uint8_t motorId = 0; motorId < 8; motorId++)
-	// 	{
-	// 		if(motorList[canLine][motorId] == nullptr) continue;
-	// 		int16_t currentData = linearMappingFloat2Int(motorList[canLine][motorId]->control.outputIntensity, -20.0f, 20.0f, -16384, 16384);
-	// 		canTxData[ (canLine << 1) + (motorId >> 2) ][ (motorId & 0x03) << 1 ] = currentData >> 8;
-	// 		canTxData[ (canLine << 1) + (motorId >> 2) ][ (motorId & 0x03) << 1 | 1 ] = currentData & 0xff;
-	// 	}
-	// }
+	for(Motor* motorPtr : motorSet)
+	{
+		uint8_t line = motorPtr->hardwareInfo.canLine - 1;
+		uint8_t id = motorPtr->hardwareInfo.controllerId - 1;
+		int16_t currentData = linearMappingFloat2Int(motorPtr->outputIntensity, -20.0f, 20.0f, -16384, 16384);
+		canTxData[ (line << 1) + (id >> 2) ][ (id & 0x03) << 1 ] = currentData >> 8;
+		canTxData[ (line << 1) + (id >> 2) ][ (id & 0x03) << 1 | 1 ] = currentData & 0xff;
+	}
 	HAL_CAN_AddTxMessage(&hcan1, &motorTxHeader1234, canTxData[0], &canTxMailbox);
 	HAL_CAN_AddTxMessage(&hcan1, &motorTxHeader5678, canTxData[1], &canTxMailbox);
 	HAL_CAN_AddTxMessage(&hcan2, &motorTxHeader1234, canTxData[2], &canTxMailbox);
