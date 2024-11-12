@@ -10,17 +10,17 @@
 
 typedef struct
 {
+	uint8_t canLine;
+	uint8_t controllerId;
+} motorHardwareInfo_t;
+
+typedef struct
+{
 	int16_t angle;
 	int16_t speed;
 	// int16_t moment;
 	int16_t temperature;
 } controllerRx_t;
-
-typedef struct
-{
-	uint8_t canLine;
-	uint8_t controllerId;
-} motorHardwareInfo_t;
 
 typedef struct
 {
@@ -53,6 +53,7 @@ public:
 
 	virtual ~Motor() = default;
 	explicit Motor(float pReductionRatio);
+	void setHardwareInfo(uint8_t pCanLine, uint8_t pControllerId);
 	void controllerRxHandle(uint8_t* data);
 	void updateState();
 	virtual void updateControl();
@@ -77,6 +78,34 @@ public:
 	motorControlUnit_t controlAngle;
 	MotorAngle(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle);
 	void updateControl() override;
+};
+
+class MotorSet
+{
+public:
+
+	MotorSet();
+	void Append(Motor* motorPtr, uint8_t canLine, uint8_t controllerId);
+	Motor* getMotorById(uint8_t canLine, uint8_t controllerId);
+
+	class Iterator
+	{
+	public:
+		explicit Iterator(Motor** pPtr);
+		Motor*& operator * () const;
+		Iterator& operator ++ ();
+		bool operator == (const Iterator& other) const;
+		bool operator != (const Iterator& other) const;
+	private:
+		Motor** ptr;
+	};
+	Iterator begin();
+	Iterator end();
+
+protected:
+	Motor* motorMap[2][8] = {nullptr};
+	Motor* motorList[16] = {nullptr};
+	uint8_t size;
 };
 
 void motorDeviceInit();

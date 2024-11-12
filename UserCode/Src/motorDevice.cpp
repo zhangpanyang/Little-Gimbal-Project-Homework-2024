@@ -30,6 +30,13 @@ MotorAngle::MotorAngle(float pReductionRatio, PID* pPidSpeed, float pFeedForward
 	};
 }
 
+void Motor::setHardwareInfo(uint8_t pCanLine, uint8_t pControllerId)
+{
+	hardwareInfo.canLine = pCanLine;
+	hardwareInfo.controllerId = pControllerId;
+}
+
+
 void Motor::controllerRxHandle(uint8_t* data)
 {
 	feedback.angle = data[0]<<8 | data[1];
@@ -91,6 +98,45 @@ void Motor::Stop()
 void Motor::Start()
 {
 	stopFlag = false;
+}
+
+MotorSet::MotorSet() : size(0){}
+MotorSet::Iterator::Iterator(Motor** pPtr) : ptr(pPtr){}
+Motor*& MotorSet::Iterator::operator * () const
+{
+	return *ptr;
+}
+MotorSet::Iterator& MotorSet::Iterator::operator ++ ()
+{
+	++ptr;
+	return *this;
+}
+bool MotorSet::Iterator::operator == (const Iterator& other) const
+{
+	return ptr == other.ptr;
+}
+bool MotorSet::Iterator::operator != (const Iterator& other) const
+{
+	return ptr != other.ptr;
+}
+MotorSet::Iterator MotorSet::begin()
+{
+	return Iterator(motorList);
+}
+MotorSet::Iterator MotorSet::end()
+{
+	return Iterator(motorList+size);
+}
+
+void MotorSet::Append(Motor* motorPtr, uint8_t canLine, uint8_t controllerId)
+{
+	motorPtr->setHardwareInfo(canLine, controllerId);
+	motorMap[canLine-1][controllerId-1] = motorPtr;
+	motorList[size++] = motorPtr;
+}
+Motor* MotorSet::getMotorById(uint8_t canLine, uint8_t controllerId)
+{
+	return motorMap[canLine-1][controllerId-1];
 }
 
 void motorDeviceInit()
