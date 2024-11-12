@@ -77,8 +77,9 @@ public:
 	motorControlUnit_t controlAngle;
 	MotorAngle(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle);
 	void updateControl() override;
-	void setSpeed(float speed) override = delete;
 	void setAngle(float angle);
+private:
+	using MotorSpeed::setSpeed;
 };
 
 class MotorSet
