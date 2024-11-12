@@ -8,10 +8,7 @@ Motor* motorList[2][8] = {nullptr};
 
 Motor::Motor(float pReductionRatio)
 {
-	hardwareInfo = {0, 0};
 	reductionRatio = pReductionRatio;
-	state = {0, 0, 0, 0};
-	feedback = {0, 0, 0};
 	lastFeedbackAngle = 0;
 	outputIntensity = 0;
 	stopFlag = 0;
