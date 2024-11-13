@@ -4,6 +4,18 @@
 
 #include "motorDevice.h"
 
+motorType_t m3508 {
+	.reductionRatio = 19.20321f,
+	.intensityLimit = 20.0f,
+	.intensityDataRatio = 819.2f,
+	.canTxIdList = {
+		0x200, 0x200, 0x200, 0x200, 0x1FF, 0x1FF, 0x1FF, 0x1FF, 0, 0, 0, 0
+	},
+	.canRxIdList = {
+		0x201, 0x202, 0x203, 0x204, 0x205, 0x206, 0x207, 0x208, 0, 0, 0, 0
+	}
+};
+
 Motor::Motor(float pReductionRatio)
 {
 	reductionRatio = pReductionRatio;

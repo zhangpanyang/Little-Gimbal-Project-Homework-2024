@@ -10,6 +10,16 @@
 
 typedef struct
 {
+	float reductionRatio;
+	float intensityLimit;
+	float intensityDataRatio;
+
+	uint16_t canTxIdList[12];
+	uint16_t canRxIdList[12];
+} motorType_t;
+
+typedef struct
+{
 	uint8_t canLine;
 	uint8_t controllerId;
 } motorHardwareInfo_t;

@@ -26,6 +26,7 @@ void canDeviceInit()
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
+uint16_t motorTxHeaderIdList[] = {0x200, 0x1FF};
 CAN_TxHeaderTypeDef motorTxHeader1234={
 	.StdId = 0x200,
 	.ExtId = 0x200,
@@ -35,13 +36,14 @@ CAN_TxHeaderTypeDef motorTxHeader1234={
 	.TransmitGlobalTime = DISABLE
 };
 CAN_TxHeaderTypeDef motorTxHeader5678={
-	.StdId = 0x200,
+	.StdId = 0x1FF,
 	.ExtId = 0x1FF,
 	.IDE = CAN_ID_STD,
 	.RTR = CAN_RTR_DATA,
 	.DLC = 8,
 	.TransmitGlobalTime = DISABLE
 };
+
 uint32_t canTxMailbox;
 
 CAN_RxHeaderTypeDef canRxHeader;
