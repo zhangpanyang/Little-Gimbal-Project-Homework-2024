@@ -16,7 +16,7 @@ typedef struct
 
 	uint8_t canTxPosInd[12];
 	uint16_t canTxIdList[12];
-	uint16_t canRxIdList[12];
+	// uint16_t canRxIdList[12];
 } motorType_t;
 
 typedef struct
