@@ -22,7 +22,11 @@ void remoteControlTaskRoutine()
 	}
 	else
 	{
-		for(auto motorPtr : motorSet)
-			motorPtr->Start();
+		if(remoteControl.switch_.l == UP_POS && remoteControl.switch_.r == UP_POS)
+		{
+			for(auto motorPtr : motorSet)
+				motorPtr->Start();
+
+		}
 	}
 }

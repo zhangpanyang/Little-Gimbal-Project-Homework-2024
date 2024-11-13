@@ -8,7 +8,7 @@ Motor::Motor(float pReductionRatio)
 {
 	reductionRatio = pReductionRatio;
 	outputIntensity = 0;
-	stopFlag = 0;
+	stopFlag = true;
 }
 MotorSpeed::MotorSpeed(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed): Motor(pReductionRatio)
 {
