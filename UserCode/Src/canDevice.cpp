@@ -26,26 +26,6 @@ void canDeviceInit()
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
-uint16_t motorTxHeaderIdList[] = {0x200, 0x1FF};
-CAN_TxHeaderTypeDef motorTxHeader1234={
-	.StdId = 0x200,
-	.ExtId = 0x200,
-	.IDE = CAN_ID_STD,
-	.RTR = CAN_RTR_DATA,
-	.DLC = 8,
-	.TransmitGlobalTime = DISABLE
-};
-CAN_TxHeaderTypeDef motorTxHeader5678={
-	.StdId = 0x1FF,
-	.ExtId = 0x1FF,
-	.IDE = CAN_ID_STD,
-	.RTR = CAN_RTR_DATA,
-	.DLC = 8,
-	.TransmitGlobalTime = DISABLE
-};
-
-uint32_t canTxMailbox;
-
 CAN_RxHeaderTypeDef canRxHeader;
 uint8_t canRxData[8];
 
@@ -61,20 +41,57 @@ void canControllerRxHandle(CAN_HandleTypeDef* hcan)
 	motorSet.getMotorById(canLine, controllerId)->controllerRxHandle(canRxData);
 }
 
-uint8_t canTxData[4][8];
-void canDeviceRoutine() // Attention! The "line" and "id" is 1 less than the real value!
+namespace CanTx
 {
-	memset(canTxData, 0, sizeof(canTxData));
+	const uint8_t headerIdCnt = 2;
+	uint16_t headerIdList[ headerIdCnt ] = {0x200, 0x1FF};
+	inline uint8_t findHeaderIndById(uint16_t targetId)
+	{
+		for (int i = 0; i < headerIdCnt; i++)
+			if (headerIdList[i] == targetId)
+				return i;
+		return headerIdCnt;
+	}
+	CAN_TxHeaderTypeDef headerTemplate={
+		.StdId = 0x000,
+		.ExtId = 0x000,
+		.IDE = CAN_ID_STD,
+		.RTR = CAN_RTR_DATA,
+		.DLC = 8,
+		.TransmitGlobalTime = DISABLE
+	};
+	CAN_HandleTypeDef* lineList[] = { &hcan1, &hcan2 };
+	uint32_t mailbox;
+	uint8_t data[ 2 ][ headerIdCnt ][ 8 ]; // can line index, header index, data index
+
+	inline void init()
+	{
+		memset(data, 0, sizeof(data));
+	}
+	void transmit()
+	{
+		for (uint8_t lineInd = 0; lineInd < 2; lineInd++)
+		{
+			for (uint8_t headerInd = 0; headerInd < 2; headerInd++)
+			{
+				headerTemplate.StdId = headerIdList[ headerInd ];
+				HAL_CAN_AddTxMessage(lineList[lineInd], &headerTemplate, data[lineInd][headerInd], &mailbox);
+			}
+		}
+	}
+}
+void canDeviceRoutine()
+{
+	CanTx::init();
 	for(auto motorPtr : motorSet)
 	{
-		uint8_t line = motorPtr->hardwareInfo.canLine - 1;
-		uint8_t id = motorPtr->hardwareInfo.controllerId - 1;
-		int16_t currentData = linearMappingFloat2Int(motorPtr->outputIntensity, -20.0f, 20.0f, -16384, 16384);
-		canTxData[ (line << 1) + (id >> 2) ][ (id & 0x03) << 1 ] = currentData >> 8;
-		canTxData[ (line << 1) + (id >> 2) ][ (id & 0x03) << 1 | 1 ] = currentData & 0xff;
+		uint8_t lineInd = motorPtr->hardwareInfo.canLine - 1;
+		uint8_t controllerInd = motorPtr->hardwareInfo.controllerId - 1;
+		uint8_t headerInd = motorPtr->motorType->canTxIdList[ controllerInd ];
+		uint8_t dataPos = motorPtr->motorType->canTxPosInd[ controllerInd ];
+		int16_t controlData = motorPtr->outputIntensity * motorPtr->motorType->intensityDataRatio;
+		CanTx::data[ lineInd ][ headerInd ][ dataPos ] = controlData >> 8;
+		CanTx::data[ lineInd ][ headerInd ][ dataPos + 1 ] = controlData & 0xff;
 	}
-	HAL_CAN_AddTxMessage(&hcan1, &motorTxHeader1234, canTxData[0], &canTxMailbox);
-	HAL_CAN_AddTxMessage(&hcan1, &motorTxHeader5678, canTxData[1], &canTxMailbox);
-	HAL_CAN_AddTxMessage(&hcan2, &motorTxHeader1234, canTxData[2], &canTxMailbox);
-	HAL_CAN_AddTxMessage(&hcan2, &motorTxHeader5678, canTxData[3], &canTxMailbox);
+	CanTx::transmit();
 }
