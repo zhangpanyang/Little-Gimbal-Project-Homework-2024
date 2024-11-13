@@ -5,6 +5,7 @@
 #include "cppMain.h"
 
 #include "canDevice.h"
+#include "ginbalTask.h"
 #include "remoteControlDevice.h"
 #include "remoteControlTask.h"
 #include "motorDevice.h"
@@ -30,7 +31,7 @@ void mainDeviceRoutine()
 
 void mainTaskRoutine()
 {
-
+	gimbalTaskInit();
 	remoteControlTaskRoutine();
 }
 

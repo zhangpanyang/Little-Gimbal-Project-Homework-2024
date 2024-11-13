@@ -18,4 +18,6 @@ public:
 	void addToAngle(float deltaAngle);
 };
 
+void gimbalTaskInit();
+
 #endif //GINBALTASK_H

@@ -20,3 +20,7 @@ void MotorAngleLimited::addToAngle(float deltaAngle)
 	controlAngle.targetValue = clampInRange(controlAngle.targetValue + deltaAngle, angleMin, angleMax);
 }
 
+void gimbalTaskInit()
+{
+
+}
