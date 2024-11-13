@@ -55,7 +55,7 @@ typedef struct
 class Motor
 {
 public:
-	float reductionRatio;
+	motorType_t* motorType;
 	motorHardwareInfo_t hardwareInfo{};
 	controllerRx_t feedback{};
 	motorState_t state{};
@@ -63,7 +63,7 @@ public:
 	uint8_t stopFlag;
 
 	virtual ~Motor() = default;
-	explicit Motor(float pReductionRatio);
+	explicit Motor(motorType_t* pMotorType);
 	void setHardwareInfo(uint8_t pCanLine, uint8_t pControllerId);
 	void controllerRxHandle(uint8_t* data);
 	void updateState();
@@ -76,7 +76,7 @@ class MotorSpeed : public Motor
 {
 public:
 	motorControlUnit_t controlSpeed;
-	MotorSpeed(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed);
+	MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, float pFeedForwardSpeed);
 	void updateControl() override;
 	virtual void setSpeed(float speed);
 };
@@ -85,7 +85,7 @@ class  MotorAngle : public MotorSpeed
 {
 public:
 	motorControlUnit_t controlAngle;
-	MotorAngle(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle);
+	MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle);
 	void updateControl() override;
 	virtual void setAngle(float angle);
 private:

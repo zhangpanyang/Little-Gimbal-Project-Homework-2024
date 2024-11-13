@@ -16,13 +16,13 @@ motorType_t m3508 {
 	}
 };
 
-Motor::Motor(float pReductionRatio)
+Motor::Motor(motorType_t* pMotorType)
 {
-	reductionRatio = pReductionRatio;
+	motorType = pMotorType;
 	outputIntensity = 0;
 	stopFlag = true;
 }
-MotorSpeed::MotorSpeed(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed): Motor(pReductionRatio)
+MotorSpeed::MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, float pFeedForwardSpeed): Motor(pMotorType)
 {
 	controlSpeed = {
 		.targetValue = 0,
@@ -30,7 +30,7 @@ MotorSpeed::MotorSpeed(float pReductionRatio, PID* pPidSpeed, float pFeedForward
 		.feedForward = pFeedForwardSpeed,
 	};
 }
-MotorAngle::MotorAngle(float pReductionRatio, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle) : MotorSpeed(pReductionRatio, pPidSpeed, pFeedForwardSpeed)
+MotorAngle::MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle) : MotorSpeed(pMotorType, pPidSpeed, pFeedForwardSpeed)
 {
 	controlAngle = {
 		.targetValue = 0,
@@ -56,7 +56,7 @@ void Motor::controllerRxHandle(uint8_t* data)
 
 void Motor::updateState()
 {
-	state.speed = feedback.speed / reductionRatio;
+	state.speed = feedback.speed / motorType->reductionRatio;
 	state.temperature = feedback.temperature;
 
 	int16_t thisAngle = feedback.angle, lastAngle = feedback.lastFeedbackAngle;
@@ -73,7 +73,7 @@ void Motor::updateState()
 			state.angleInt += (thisAngle - lastAngle);
 	}
 	feedback.lastFeedbackAngle = thisAngle;
-	state.angle = state.angleInt * 0.0439453125f / reductionRatio;// * 360.0f / 8192.0f
+	state.angle = state.angleInt * 0.0439453125f / motorType->reductionRatio;// * 360.0f / 8192.0f
 }
 
 void Motor::updateControl()
