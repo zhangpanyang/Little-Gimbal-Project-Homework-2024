@@ -24,21 +24,27 @@ void canDeviceInit()
 	HAL_CAN_ConfigFilter(&hcan1, &filterConfig);
 	HAL_CAN_Start(&hcan1);
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
+	HAL_CAN_ConfigFilter(&hcan2, &filterConfig);
+	HAL_CAN_Start(&hcan2);
+	HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
-
-CAN_RxHeaderTypeDef canRxHeader;
-uint8_t canRxData[8];
 
 extern MotorSet motorSet;
 
-void canControllerRxHandle(CAN_HandleTypeDef* hcan)
+namespace CanRx
 {
-	HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &canRxHeader, canRxData);
-	uint8_t canLine;
-	if(hcan == &hcan1) canLine = 1;
-	if(hcan == &hcan2) canLine = 2;
-	uint8_t controllerId = canRxHeader.StdId - 0x200;
-	motorSet.getMotorById(canLine, controllerId)->controllerRxHandle(canRxData);
+	CAN_RxHeaderTypeDef header;
+	uint8_t data[8];
+
+	void handle(CAN_HandleTypeDef* hcan)
+	{
+		HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &header, data);
+		uint8_t canLine;
+		if(hcan == &hcan1) canLine = 1;
+		if(hcan == &hcan2) canLine = 2;
+		uint8_t controllerId = header.StdId - 0x200;
+		motorSet.getMotorById(canLine, controllerId)->controllerRxHandle(data);
+	}
 }
 
 namespace CanTx

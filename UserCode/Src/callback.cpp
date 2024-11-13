@@ -36,7 +36,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart)
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef* hcan)
 {
 	if(hcan == &hcan1 || hcan == &hcan2)
-		canControllerRxHandle(hcan);
+		CanRx::handle(hcan);
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
