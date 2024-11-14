@@ -5,12 +5,32 @@
 #include "motorDevice.h"
 
 motorType_t m3508 {
-	.reductionRatio = 19.20321f,
+	.reductionRatio = 19.203209f,
 	.intensityLimit = 20.0f,
 	.intensityDataRatio = 819.2f,
-	.canTxPosInd = { 0, 2, 4, 6, 0, 2, 4, 6, 0, 2, 4, 6},
-	.canTxIdList = { 0x200, 0x200, 0x200, 0x200, 0x1FF, 0x1FF, 0x1FF, 0x1FF, 0, 0, 0, 0 },
-	// .canRxIdList = { 0x201, 0x202, 0x203, 0x204, 0x205, 0x206, 0x207, 0x208, 0, 0, 0, 0 }
+	.canTxPosInd = { 0, 2, 4, 6, 0, 2, 4, 6, 0, 0, 0, 0},
+	.canTxIdList = { 0x200, 0x200, 0x200, 0x200, 0x1FF, 0x1FF, 0x1FF, 0x1FF, 0, 0, 0, 0 }
+};
+motorType_t m2006 {
+	.reductionRatio = 36.0f,
+	.intensityLimit = 10.0f,
+	.intensityDataRatio = 1000.0f,
+	.canTxPosInd = { 0, 2, 4, 6, 0, 2, 4, 6, 0, 0, 0, 0},
+	.canTxIdList = { 0x200, 0x200, 0x200, 0x200, 0x1FF, 0x1FF, 0x1FF, 0x1FF, 0, 0, 0, 0 }
+};
+motorType_t gm6020_i {
+	.reductionRatio = 1.0f,
+	.intensityLimit = 3.0f,
+	.intensityDataRatio = 5461.3333f,
+	.canTxPosInd = { 0, 0, 0, 0, 0, 2, 4, 6, 0, 2, 4, 6},
+	.canTxIdList = { 0, 0, 0, 0, 0x1FE, 0x1FE, 0x1FE, 0x1FE, 0X2FE, 0X2FE, 0X2FE, 0 }
+};
+motorType_t gm6020_v {
+	.reductionRatio = 1.0f,
+	.intensityLimit = 25000.0f,
+	.intensityDataRatio = 1.0f,
+	.canTxPosInd = { 0, 0, 0, 0, 0, 2, 4, 6, 0, 2, 4, 6},
+	.canTxIdList = { 0, 0, 0, 0, 0x1FF, 0x1FF, 0x1FF, 0x1FF, 0x2FF, 0x2FF, 0x2FF, 0 }
 };
 
 Motor::Motor(motorType_t* pMotorType)
