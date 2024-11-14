@@ -21,6 +21,7 @@ void mainDeviceInit()
 void mainTaskInit()
 {
 	remoteControlTaskInit();
+	gimbalTaskInit();
 }
 
 void mainDeviceRoutine()
@@ -31,7 +32,6 @@ void mainDeviceRoutine()
 
 void mainTaskRoutine()
 {
-	gimbalTaskInit();
 	remoteControlTaskRoutine();
 }
 

@@ -6,7 +6,6 @@
 #include "motorDevice.h"
 
 extern RemoteControl remoteControl;
-extern MotorSet motorSet;
 
 void remoteControlTaskInit()
 {

@@ -117,12 +117,19 @@ public:
 	Iterator end();
 
 protected:
-	Motor* motorMap[2][8] = {nullptr};
-	Motor* motorList[16] = {nullptr};
+	Motor* motorMap[2][12] = {nullptr};
+	Motor* motorList[24] = {nullptr};
 	uint8_t size;
 };
 
 void motorDeviceInit();
 void motorDeviceRoutine();
+
+extern MotorSet motorSet;
+
+extern motorType_t m3508;
+extern motorType_t m2006;
+extern motorType_t gm6020_i;
+extern motorType_t gm6020_v;
 
 #endif //MOTORDEVICE_H

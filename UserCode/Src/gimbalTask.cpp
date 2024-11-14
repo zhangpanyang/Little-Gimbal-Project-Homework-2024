@@ -25,7 +25,15 @@ float emptyFeedForward(float in)
 	return 0;
 }
 
+namespace Gimbal
+{
+	PID pidPitchSpeed(new PIDInitializer{0, 0, 0, 1000, 1000, 1000});
+	PID pidPitchAngle(new PIDInitializer{0, 0, 0, 1000, 1000, 1000});
+
+	MotorAngleLimited motorPitch(&gm6020_i, &pidPitchSpeed, emptyFeedForward, &pidPitchAngle, emptyFeedForward, 0, 360);
+}
+
 void gimbalTaskInit()
 {
-
+	motorSet.Append(&Gimbal::motorPitch, 1, 5);
 }

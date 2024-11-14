@@ -29,8 +29,6 @@ void canDeviceInit()
 	HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
-extern MotorSet motorSet;
-
 namespace CanRx
 {
 	CAN_RxHeaderTypeDef header;
