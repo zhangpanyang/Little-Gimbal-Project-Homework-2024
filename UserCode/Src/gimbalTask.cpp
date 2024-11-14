@@ -4,7 +4,7 @@
 
 #include "ginbalTask.h"
 
-MotorAngleLimited::MotorAngleLimited(motorType_t* pMotorType, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle, float pAngleMin, float pAngleMax):
+MotorAngleLimited::MotorAngleLimited(motorType_t* pMotorType, PID* pPidSpeed, FeedBackPtr pFeedForwardSpeed, PID* pPidAngle, FeedBackPtr pFeedForwardAngle, float pAngleMin, float pAngleMax):
 	MotorAngle(pMotorType, pPidSpeed, pFeedForwardSpeed, pPidAngle, pFeedForwardAngle)
 {
 	angleMin = pAngleMin;

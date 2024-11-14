@@ -19,7 +19,7 @@ Motor::Motor(motorType_t* pMotorType)
 	outputIntensity = 0;
 	stopFlag = true;
 }
-MotorSpeed::MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, float pFeedForwardSpeed): Motor(pMotorType)
+MotorSpeed::MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, FeedBackPtr pFeedForwardSpeed): Motor(pMotorType)
 {
 	controlSpeed = {
 		.targetValue = 0,
@@ -27,7 +27,7 @@ MotorSpeed::MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, float pFeedForwa
 		.feedForward = pFeedForwardSpeed,
 	};
 }
-MotorAngle::MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, float pFeedForwardSpeed, PID* pPidAngle, float pFeedForwardAngle) : MotorSpeed(pMotorType, pPidSpeed, pFeedForwardSpeed)
+MotorAngle::MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, FeedBackPtr pFeedForwardSpeed, PID* pPidAngle, FeedBackPtr pFeedForwardAngle) : MotorSpeed(pMotorType, pPidSpeed, std::move(pFeedForwardSpeed))
 {
 	controlAngle = {
 		.targetValue = 0,
