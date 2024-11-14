@@ -8,7 +8,7 @@
 #include "pidTools.h"
 #include "main.h"
 
-typedef struct
+struct motorType_t
 {
 	float reductionRatio;
 	float intensityLimit;
@@ -17,33 +17,33 @@ typedef struct
 	uint8_t canTxPosInd[12];
 	uint16_t canTxIdList[12];
 	// uint16_t canRxIdList[12];
-} motorType_t;
+};
 
-typedef struct
+struct motorHardwareInfo_t
 {
 	uint8_t canLine;
 	uint8_t controllerId;
-} motorHardwareInfo_t;
+};
 
-typedef struct
+struct controllerRx_t
 {
 	int16_t angle;
 	int16_t speed;
 	// int16_t moment;
 	int16_t temperature;
 	int16_t lastFeedbackAngle;
-} controllerRx_t;
+};
 
-typedef struct
+struct motorState_t
 {
 	float speed; //dps
 	int32_t angleInt; //8192
 	float angle; //degree
 	float temperature;
-} motorState_t;
+};
 
 using FeedForwardPtr = float (*) (float);
-typedef struct
+struct motorControlUnit_t
 {
 	float targetValue;
 	PID pid;
@@ -52,7 +52,7 @@ typedef struct
 	{
 		return pid.compute(targetValue, actualValue, deltaTime) + feedForward(actualValue);
 	}
-} motorControlUnit_t;
+};
 
 class Motor
 {

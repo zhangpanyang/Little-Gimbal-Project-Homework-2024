@@ -7,7 +7,7 @@
 
 #include "generalTools.h"
 
-typedef struct
+struct PIDInitializer
 {
 	float Kp;  // 比例增益
 	float Ki;  // 积分增益
@@ -15,7 +15,7 @@ typedef struct
 	float outputMax;
 	float pMax;
 	float integralMax;
-} PIDInitializer;
+};
 
 class PID
 {
