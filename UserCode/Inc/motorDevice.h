@@ -7,7 +7,6 @@
 
 #include "pidTools.h"
 #include "main.h"
-#include <functional>
 
 typedef struct
 {
@@ -43,12 +42,12 @@ typedef struct
 	float temperature;
 } motorState_t;
 
-using FeedBackPtr = float (*) (float);
+using FeedForwardPtr = float (*) (float);
 typedef struct
 {
 	float targetValue;
 	PID pid;
-	FeedBackPtr feedForward;
+	FeedForwardPtr feedForward;
 	float compute(float actualValue, float deltaTime)
 	{
 		return pid.compute(targetValue, actualValue, deltaTime) + feedForward(actualValue);
@@ -79,7 +78,7 @@ class MotorSpeed : public Motor
 {
 public:
 	motorControlUnit_t controlSpeed;
-	MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, FeedBackPtr pFeedForwardSpeed);
+	MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed);
 	void updateControl() override;
 	virtual void setSpeed(float speed);
 };
@@ -88,7 +87,7 @@ class  MotorAngle : public MotorSpeed
 {
 public:
 	motorControlUnit_t controlAngle;
-	MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, FeedBackPtr pFeedForwardSpeed, PID* pPidAngle, FeedBackPtr pFeedForwardAngle);
+	MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle);
 	void updateControl() override;
 	virtual void setAngle(float angle);
 private:

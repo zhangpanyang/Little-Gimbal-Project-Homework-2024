@@ -13,7 +13,7 @@ public:
 	float angleMin;
 	float angleMax;
 
-	MotorAngleLimited(motorType_t* pMotorType, PID* pPidSpeed, FeedBackPtr pFeedForwardSpeed, PID* pPidAngle, FeedBackPtr pFeedForwardAngle, float pAngleMin, float pAngleMax);
+	MotorAngleLimited(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle, float pAngleMin, float pAngleMax);
 	void setAngle(float angle) override;
 	void addToAngle(float deltaAngle);
 };

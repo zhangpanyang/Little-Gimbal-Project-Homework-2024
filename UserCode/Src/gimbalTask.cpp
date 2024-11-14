@@ -4,7 +4,7 @@
 
 #include "ginbalTask.h"
 
-MotorAngleLimited::MotorAngleLimited(motorType_t* pMotorType, PID* pPidSpeed, FeedBackPtr pFeedForwardSpeed, PID* pPidAngle, FeedBackPtr pFeedForwardAngle, float pAngleMin, float pAngleMax):
+MotorAngleLimited::MotorAngleLimited(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle, float pAngleMin, float pAngleMax):
 	MotorAngle(pMotorType, pPidSpeed, pFeedForwardSpeed, pPidAngle, pFeedForwardAngle)
 {
 	angleMin = pAngleMin;
@@ -18,6 +18,11 @@ void MotorAngleLimited::setAngle(float angle)
 void MotorAngleLimited::addToAngle(float deltaAngle)
 {
 	controlAngle.targetValue = clampInRange(controlAngle.targetValue + deltaAngle, angleMin, angleMax);
+}
+
+float emptyFeedForward(float in)
+{
+	return 0;
 }
 
 void gimbalTaskInit()
