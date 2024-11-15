@@ -152,6 +152,9 @@ void motorDeviceInit()
 
 void motorDeviceRoutine()
 {
+	// TODO: Dangerous! Only for debug.
+	for(auto motorPtr : motorSet)
+		motorPtr->Start();
 	for(auto motorPtr : motorSet)
 	{
 		motorPtr->updateState();

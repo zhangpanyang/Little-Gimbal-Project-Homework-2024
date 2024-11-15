@@ -6,6 +6,7 @@
 
 #include "canDevice.h"
 #include "ginbalTask.h"
+#include "iwdg.h"
 #include "remoteControlDevice.h"
 #include "remoteControlTask.h"
 #include "motorDevice.h"
@@ -28,6 +29,7 @@ void mainDeviceRoutine()
 {
 	motorDeviceRoutine();
 	canDeviceRoutine();
+	HAL_IWDG_Refresh(&hiwdg);
 }
 
 void mainTaskRoutine()

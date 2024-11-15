@@ -47,8 +47,8 @@ namespace CanRx
 
 namespace CanTx
 {
-	const uint8_t headerIdCnt = 2;
-	uint16_t headerIdList[ headerIdCnt ] = {0x200, 0x1FF};
+	const uint8_t headerIdCnt = 5;
+	uint16_t headerIdList[ headerIdCnt ] = {0x200, 0x1FF, 0x1FE, 0x2FE, 0x2FF};
 	inline uint8_t findHeaderIndById(uint16_t targetId)
 	{
 		for (int i = 0; i < headerIdCnt; i++)
@@ -76,7 +76,7 @@ namespace CanTx
 	{
 		for (uint8_t lineInd = 0; lineInd < 2; lineInd++)
 		{
-			for (uint8_t headerInd = 0; headerInd < 2; headerInd++)
+			for (uint8_t headerInd = 0; headerInd < headerIdCnt; headerInd++)
 			{
 				headerTemplate.StdId = headerIdList[ headerInd ];
 				HAL_CAN_AddTxMessage(lineList[lineInd], &headerTemplate, data[lineInd][headerInd], &mailbox);
@@ -91,7 +91,7 @@ void canDeviceRoutine()
 	{
 		uint8_t lineInd = motorPtr->hardwareInfo.canLine - 1;
 		uint8_t controllerInd = motorPtr->hardwareInfo.controllerId - 1;
-		uint8_t headerInd = motorPtr->motorType->canTxIdList[ controllerInd ];
+		uint8_t headerInd = CanTx::findHeaderIndById(motorPtr->motorType->canTxIdList[ controllerInd ]);
 		uint8_t dataPos = motorPtr->motorType->canTxPosInd[ controllerInd ];
 		int16_t controlData = motorPtr->outputIntensity * motorPtr->motorType->intensityDataRatio;
 		CanTx::data[ lineInd ][ headerInd ][ dataPos ] = controlData >> 8;
