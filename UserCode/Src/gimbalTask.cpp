@@ -39,7 +39,7 @@ float emptyFeedForward(float in)
 
 float pitchFeedForward(float in)
 {
-	return -7.5314e-04f*in*in*in*in -0.0940f*in*in*in -3.9690f*in*in -92.6073f*in -1.4013e+03f;
+	return 0.0027f*in*in*in +0.1765f*in*in -25.8155f*in -1.0886e+03f;
 	// return -0.0846f*in*in -32.9132f*in -1.1370e+03f;
 }
 
