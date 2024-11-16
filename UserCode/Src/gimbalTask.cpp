@@ -39,8 +39,8 @@ float emptyFeedForward(float in)
 
 float pitchFeedForward(float in)
 {
-	return -0.0846f*in*in -32.9132f*in -1.1370e+03f;
-	// return -0.0084f*in*in*in -0.8771f*in*in -53.2058f*in -1.4395e+03f;
+	return -7.5314e-04f*in*in*in*in -0.0940f*in*in*in -3.9690f*in*in -92.6073f*in -1.4013e+03f;
+	// return -0.0846f*in*in -32.9132f*in -1.1370e+03f;
 }
 
 // namespace Gimbal
