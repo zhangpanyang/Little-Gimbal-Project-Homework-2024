@@ -187,6 +187,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>mainTick</ItemText>
         </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>-0.0084f*motorPitch.MotorAngle.MotorSpeed.Motor.state.angle*motorPitch.MotorAngle.MotorSpeed.Motor.state.angle*motorPitch.MotorAngle.MotorSpeed.Motor.state.angle -0.8771f*motorPitch.MotorAngle.MotorSpeed.Motor.state.angle*motorPitch.MotorAngle.MotorSpeed.Motor.state.angle -53.2058f*motorPitch.MotorAngle.MotorSpeed.Motor.state.angle -1.4395e+03f</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>motorPitch.MotorAngle.MotorSpeed.Motor.state.angle</ItemText>
+        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>

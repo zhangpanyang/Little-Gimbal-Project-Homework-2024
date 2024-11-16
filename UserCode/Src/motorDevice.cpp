@@ -10,20 +10,18 @@ Motor::Motor(motorType_t* pMotorType)
 	outputIntensity = 0;
 	stopFlag = true;
 }
-MotorSpeed::MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed): Motor(pMotorType)
+MotorSpeed::MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed): Motor(pMotorType)
 {
 	controlSpeed = {
 		.targetValue = 0,
 		.pid = *pPidSpeed,
-		.feedForward = pFeedForwardSpeed,
 	};
 }
-MotorAngle::MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle) : MotorSpeed(pMotorType, pPidSpeed, pFeedForwardSpeed)
+MotorAngle::MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, PID* pPidAngle) : MotorSpeed(pMotorType, pPidSpeed)
 {
 	controlAngle = {
 		.targetValue = 0,
 		.pid = *pPidAngle,
-		.feedForward = pFeedForwardAngle,
 	};
 }
 
@@ -157,9 +155,6 @@ void motorDeviceInit()
 
 void motorDeviceRoutine()
 {
-	// TODO: Dangerous! Only for debug.
-	for(auto motorPtr : motorSet)
-		motorPtr->Start();
 	for(auto motorPtr : motorSet)
 	{
 		motorPtr->updateState();

@@ -42,15 +42,13 @@ struct motorState_t
 	float temperature;
 };
 
-using FeedForwardPtr = float (*) (float);
 struct motorControlUnit_t
 {
 	float targetValue;
 	PID pid;
-	FeedForwardPtr feedForward;
 	float compute(float actualValue, float deltaTime)
 	{
-		return pid.compute(targetValue, actualValue, deltaTime) + feedForward(actualValue);
+		return pid.compute(targetValue, actualValue, deltaTime);
 	}
 };
 
@@ -78,7 +76,7 @@ class MotorSpeed : public Motor
 {
 public:
 	motorControlUnit_t controlSpeed;
-	MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed);
+	MotorSpeed(motorType_t* pMotorType, PID* pPidSpeed);
 	void updateControl() override;
 	virtual void setSpeed(float speed);
 };
@@ -87,7 +85,7 @@ class  MotorAngle : public MotorSpeed
 {
 public:
 	motorControlUnit_t controlAngle;
-	MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle);
+	MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, PID* pPidAngle);
 	void updateControl() override;
 	virtual void setAngle(float angle);
 	void zeroSet();

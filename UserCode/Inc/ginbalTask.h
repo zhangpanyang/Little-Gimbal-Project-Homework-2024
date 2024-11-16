@@ -6,14 +6,19 @@
 #define GINBALTASK_H
 
 #include "motorDevice.h"
+#include "cppMain.h"
 
-class MotorAngleLimited : public MotorAngle
+class MotorAnglePitch : public MotorAngle
 {
 public:
 	float angleMin;
 	float angleMax;
 
-	MotorAngleLimited(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle, float pAngleMin, float pAngleMax);
+	using FeedForwardPtr = float (*) (float);
+	FeedForwardPtr feedForwardAngle;
+
+	MotorAnglePitch(motorType_t* pMotorType, PID* pPidSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle, float pAngleMin, float pAngleMax);
+	void updateControl() override;
 	void setAngle(float angle) override;
 	void addToAngle(float deltaAngle);
 };
