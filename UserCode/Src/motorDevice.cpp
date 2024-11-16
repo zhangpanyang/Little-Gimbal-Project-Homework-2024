@@ -38,7 +38,7 @@ void Motor::controllerRxHandle(uint8_t* data)
 {
 	feedback.angle = data[0]<<8 | data[1];
 	feedback.speed = data[2]<<8 | data[3];
-	// feedback.moment = data[4]<<8 | data[5];
+	feedback.moment = data[4]<<8 | data[5];
 	feedback.temperature = data[6];
 }
 
@@ -84,8 +84,9 @@ void MotorAngle::updateControl()
 		outputIntensity = 0;
 		return;
 	}
-	controlSpeed.targetValue = controlAngle.compute(state.angle, 0.001);
-	outputIntensity = controlSpeed.compute(state.speed, 0.001);
+	// outputIntensity = 0.01f;
+	// controlSpeed.targetValue = controlAngle.compute(state.angle, 0.001);
+	// outputIntensity = controlSpeed.compute(state.speed, 0.001);
 }
 void MotorSpeed::setSpeed(float speed)
 {

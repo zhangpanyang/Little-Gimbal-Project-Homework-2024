@@ -29,7 +29,7 @@ struct controllerRx_t
 {
 	int16_t angle;
 	int16_t speed;
-	// int16_t moment;
+	int16_t moment;
 	int16_t temperature;
 	int16_t lastFeedbackAngle;
 };
