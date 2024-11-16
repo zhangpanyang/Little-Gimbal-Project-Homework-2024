@@ -24,9 +24,9 @@ void canDeviceInit()
 	HAL_CAN_ConfigFilter(&hcan1, &filterConfig);
 	HAL_CAN_Start(&hcan1);
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING);
-	// HAL_CAN_ConfigFilter(&hcan2, &filterConfig);
-	// HAL_CAN_Start(&hcan2);
-	// HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
+	HAL_CAN_ConfigFilter(&hcan2, &filterConfig);
+	HAL_CAN_Start(&hcan2);
+	HAL_CAN_ActivateNotification(&hcan2, CAN_IT_RX_FIFO0_MSG_PENDING);
 }
 
 namespace CanRx
@@ -75,30 +75,8 @@ namespace CanTx
 		memset(frameActivated, 0, sizeof(frameActivated));
 	}
 
-	// CAN_TxHeaderTypeDef txHeader={
-	// 	.StdId = 0x1FF,
-	// 	.ExtId = 0x1FF,
-	// 	.IDE = CAN_ID_STD,
-	// 	.RTR = CAN_RTR_DATA,
-	// 	.DLC = 8,
-	// 	.TransmitGlobalTime = DISABLE
-	// 	};
-	// uint32_t txMailbox;
-	// uint8_t txData[8];
-
 	void transmit()
 	{
-		// txData[0] = 0x20;
-		// txData[1] = 0x70;
-		// txData[2] = 0x20;
-		// txData[3] = 0x70;
-		// txData[4] = 0x20;
-		// txData[5] = 0x70;
-		// txData[6] = 0x20;
-		// txData[7] = 0x70;
-		// if(HAL_CAN_AddTxMessage(&hcan1, &txHeader, txData, &txMailbox) != HAL_OK){
-		// 	txData[0] = 0;
-		// }
 		for (uint8_t headerInd = 0; headerInd < headerIdCnt; headerInd++)
 		{
 			for (uint8_t lineInd = 0; lineInd < 2; lineInd++)
