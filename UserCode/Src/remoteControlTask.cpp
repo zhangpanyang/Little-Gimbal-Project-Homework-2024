@@ -3,9 +3,13 @@
 //
 
 #include "remoteControlTask.h"
+
+#include "ginbalTask.h"
 #include "motorDevice.h"
 
 extern RemoteControl remoteControl;
+
+extern MotorAnglePitch motorPitch;
 
 void remoteControlTaskInit()
 {
@@ -25,7 +29,7 @@ void remoteControlTaskRoutine()
 		{
 			for(auto motorPtr : motorSet)
 				motorPtr->Start();
-
+			motorPitch.addToAngle(remoteControl.channel_.l_col*(-0.05f));
 		}
 	}
 }

@@ -30,10 +30,10 @@ void remoteControlDeviceInit()
 void RemoteControl::frameHandle()
 {
 	channel_.r_row = linearMappingInt2Float((rcRxData[0] | (rcRxData[1] << 8)) & 0x07ff, 364, 1684, -1.0, 1.0);
-	channel_.l_col = linearMappingInt2Float(((rcRxData[1] >> 3) | (rcRxData[2] << 5)) & 0x07ff, 364, 1684, -1.0,
+	channel_.r_col = linearMappingInt2Float(((rcRxData[1] >> 3) | (rcRxData[2] << 5)) & 0x07ff, 364, 1684, -1.0,
 											1.0);
-	channel_.r_col = linearMappingInt2Float(((rcRxData[2] >> 6) | (rcRxData[3] << 2) | (rcRxData[4] << 10)) &0x07ff, 364, 1684, -1.0, 1.0);
-	channel_.l_row = linearMappingInt2Float( ((rcRxData[4] >> 1) | (rcRxData[5] << 7)) & 0x07ff, 364, 1684, -1.0, 1.0);
+	channel_.l_row = linearMappingInt2Float(((rcRxData[2] >> 6) | (rcRxData[3] << 2) | (rcRxData[4] << 10)) &0x07ff, 364, 1684, -1.0, 1.0);
+	channel_.l_col = linearMappingInt2Float( ((rcRxData[4] >> 1) | (rcRxData[5] << 7)) & 0x07ff, 364, 1684, -1.0, 1.0);
 
 	switch_.r = RCSwitchStates[((rcRxData[5] >> 4) & 0x0003) - 1];
 	switch_.l = RCSwitchStates[((rcRxData[5] >> 4) & 0x000C) - 1];
