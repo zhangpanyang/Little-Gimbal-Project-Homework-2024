@@ -27,10 +27,10 @@ float emptyFeedForward(float in)
 
 // namespace Gimbal
 // {
-	PID pidPitchSpeed(new PIDInitializer{0, 0, 0, 1000, 1000, 1000});
-	PID pidPitchAngle(new PIDInitializer{0, 0, 0, 1000, 1000, 1000});
+	PID pidPitchSpeed(new PIDInitializer{150, 0, 0, 25000, 25000, 25000});
+	PID pidPitchAngle(new PIDInitializer{0, 0, 0, 25000, 25000, 25000});
 
-	MotorAngleLimited motorPitch(&gm6020_v, &pidPitchSpeed, emptyFeedForward, &pidPitchAngle, emptyFeedForward, 0, 360);
+	MotorAngleLimited motorPitch(&gm6020_v, &pidPitchSpeed, emptyFeedForward, &pidPitchAngle, emptyFeedForward, -360, 360);
 // }
 
 void gimbalTaskInit()
