@@ -9,11 +9,15 @@
 extern "C"{
 #endif
 
+	#include "main.h"
+
 	void cppMain();
 	void mainDeviceInit();
 	void mainDeviceRoutine();
 	void mainTaskInit();
 	void mainTaskRoutine();
+
+	extern uint32_t mainTick;
 
 #ifdef __cplusplus
 }

@@ -38,6 +38,8 @@ void mainTaskRoutine()
 	gimbalTaskRoutine();
 }
 
+uint32_t mainTick;
+
 void cppMain()
 {
 	mainDeviceInit();

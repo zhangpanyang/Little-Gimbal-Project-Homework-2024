@@ -182,6 +182,11 @@
           <WinNumber>1</WinNumber>
           <ItemText>motorPitch.MotorAngle.MotorSpeed.Motor</ItemText>
         </Ww>
+        <Ww>
+          <count>3</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>mainTick</ItemText>
+        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>
