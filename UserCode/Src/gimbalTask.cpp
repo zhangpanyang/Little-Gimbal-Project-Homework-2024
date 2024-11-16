@@ -30,7 +30,7 @@ float emptyFeedForward(float in)
 	PID pidPitchSpeed(new PIDInitializer{0, 0, 0, 1000, 1000, 1000});
 	PID pidPitchAngle(new PIDInitializer{0, 0, 0, 1000, 1000, 1000});
 
-	MotorAngleLimited motorPitch(&gm6020_i, &pidPitchSpeed, emptyFeedForward, &pidPitchAngle, emptyFeedForward, 0, 360);
+	MotorAngleLimited motorPitch(&gm6020_v, &pidPitchSpeed, emptyFeedForward, &pidPitchAngle, emptyFeedForward, 0, 360);
 // }
 
 void gimbalTaskInit()
