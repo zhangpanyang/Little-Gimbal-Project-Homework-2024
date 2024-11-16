@@ -34,7 +34,8 @@ void mainDeviceRoutine()
 
 void mainTaskRoutine()
 {
-	remoteControlTaskRoutine();
+	// remoteControlTaskRoutine();
+	gimbalTaskRoutine();
 }
 
 void cppMain()

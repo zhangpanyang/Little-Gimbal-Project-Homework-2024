@@ -30,10 +30,20 @@ float emptyFeedForward(float in)
 	PID pidPitchSpeed(new PIDInitializer{150, 0, 0, 25000, 25000, 25000});
 	PID pidPitchAngle(new PIDInitializer{0, 0, 0, 25000, 25000, 25000});
 
-	MotorAngleLimited motorPitch(&gm6020_v, &pidPitchSpeed, emptyFeedForward, &pidPitchAngle, emptyFeedForward, -360, 360);
+	MotorAngleLimited motorPitch(&gm6020_v, &pidPitchSpeed, emptyFeedForward, &pidPitchAngle, emptyFeedForward, -62.5, 0);
 // }
 
+uint8_t gimbalZeroSetFlag;
 void gimbalTaskInit()
 {
 	motorSet.Append(&motorPitch, 1, 5);
+	gimbalZeroSetFlag = 5;
+}
+void gimbalTaskRoutine()
+{
+	if(gimbalZeroSetFlag)
+	{
+		motorPitch.zeroSet();
+		gimbalZeroSetFlag --;
+	}
 }

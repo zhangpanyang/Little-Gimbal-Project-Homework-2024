@@ -95,6 +95,11 @@ void MotorAngle::setAngle(float angle)
 {
 	controlAngle.targetValue = angle;
 }
+void MotorAngle::zeroSet()
+{
+	state.angleInt = 0;
+	state.angle = 0;
+}
 
 void Motor::Stop()
 {

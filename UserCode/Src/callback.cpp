@@ -44,5 +44,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef* htim)
 	if(htim == &htim6)
 	{
 		mainDeviceRoutine();
+		mainTaskRoutine();
 	}
 }

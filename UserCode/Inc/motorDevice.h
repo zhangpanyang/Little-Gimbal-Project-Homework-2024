@@ -90,6 +90,7 @@ public:
 	MotorAngle(motorType_t* pMotorType, PID* pPidSpeed, FeedForwardPtr pFeedForwardSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle);
 	void updateControl() override;
 	virtual void setAngle(float angle);
+	void zeroSet();
 private:
 	using MotorSpeed::setSpeed;
 };

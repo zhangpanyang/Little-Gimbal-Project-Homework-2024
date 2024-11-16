@@ -19,5 +19,6 @@ public:
 };
 
 void gimbalTaskInit();
+void gimbalTaskRoutine();
 
 #endif //GINBALTASK_H
