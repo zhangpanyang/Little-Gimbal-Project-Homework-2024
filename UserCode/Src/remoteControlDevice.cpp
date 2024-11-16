@@ -29,23 +29,21 @@ void remoteControlDeviceInit()
 
 void RemoteControl::frameHandle()
 {
-	channel_.r_row = linearMappingInt2Float((uint16_t)rcRxData[0] << 3 | rcRxData[1] >> 5, 364, 1684, -1.0, 1.0);
-	channel_.l_col = linearMappingInt2Float((uint16_t)(rcRxData[1] & 0x1f) << 6 | rcRxData[2] >> 2, 364, 1684, -1.0,
+	channel_.r_row = linearMappingInt2Float((rcRxData[0] | (rcRxData[1] << 8)) & 0x07ff, 364, 1684, -1.0, 1.0);
+	channel_.l_col = linearMappingInt2Float(((rcRxData[1] >> 3) | (rcRxData[2] << 5)) & 0x07ff, 364, 1684, -1.0,
 											1.0);
-	channel_.r_col = linearMappingInt2Float(
-		(uint16_t)(rcRxData[2] & 0x03) << 9 | (uint16_t)rcRxData[3] << 1 | rcRxData[4] >> 7, 364, 1684, -1.0, 1.0);
-	channel_.l_row = linearMappingInt2Float((uint16_t)(rcRxData[4] & 0x7f) << 4 | rcRxData[5] >> 4, 364, 1684, -1.0,
-											1.0);
+	channel_.r_col = linearMappingInt2Float(((rcRxData[2] >> 6) | (rcRxData[3] << 2) | (rcRxData[4] << 10)) &0x07ff, 364, 1684, -1.0, 1.0);
+	channel_.l_row = linearMappingInt2Float( ((rcRxData[4] >> 1) | (rcRxData[5] << 7)) & 0x07ff, 364, 1684, -1.0, 1.0);
 
-	switch_.r = RCSwitchStates[(rcRxData[5] >> 2 & 0x03) - 1];
-	switch_.l = RCSwitchStates[(rcRxData[5] & 0x03) - 1];
+	switch_.r = RCSwitchStates[((rcRxData[5] >> 4) & 0x0003) - 1];
+	switch_.l = RCSwitchStates[((rcRxData[5] >> 4) & 0x000C) - 1];
 
-	mouse_.x = linearMappingInt2Float((uint16_t)((uint16_t)rcRxData[6] << 8 | rcRxData[7]), -32768, 32767, -1.0, 1.0);
-	mouse_.y = linearMappingInt2Float((uint16_t)((uint16_t)rcRxData[8] << 8 | rcRxData[9]), -32768, 32767, -1.0, 1.0);
-	mouse_.z = linearMappingInt2Float((uint16_t)((uint16_t)rcRxData[10] << 8 | rcRxData[11]), -32768, 32767, -1.0, 1.0);
-
-	mouse_.l = RCMouseClickStates[rcRxData[12]];
-	mouse_.l = RCMouseClickStates[rcRxData[13]];
-
-	keys_ = rcRxData[14];
+	// mouse_.x = linearMappingInt2Float((uint16_t)((uint16_t)rcRxData[6] << 8 | rcRxData[7]), -32768, 32767, -1.0, 1.0);
+	// mouse_.y = linearMappingInt2Float((uint16_t)((uint16_t)rcRxData[8] << 8 | rcRxData[9]), -32768, 32767, -1.0, 1.0);
+	// mouse_.z = linearMappingInt2Float((uint16_t)((uint16_t)rcRxData[10] << 8 | rcRxData[11]), -32768, 32767, -1.0, 1.0);
+	//
+	// mouse_.l = RCMouseClickStates[rcRxData[12]];
+	// mouse_.l = RCMouseClickStates[rcRxData[13]];
+	//
+	// keys_ = rcRxData[14];
 }

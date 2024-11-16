@@ -197,6 +197,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>motorPitch.MotorAngle.MotorSpeed.Motor.state.angle</ItemText>
         </Ww>
+        <Ww>
+          <count>6</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>remoteControl</ItemText>
+        </Ww>
+        <Ww>
+          <count>7</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>rcRxData</ItemText>
+        </Ww>
       </WatchWindow1>
       <Tracepoint>
         <THDelay>0</THDelay>

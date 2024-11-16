@@ -34,7 +34,7 @@ void mainDeviceRoutine()
 
 void mainTaskRoutine()
 {
-	// remoteControlTaskRoutine();
+	remoteControlTaskRoutine();
 	gimbalTaskRoutine();
 }
 
