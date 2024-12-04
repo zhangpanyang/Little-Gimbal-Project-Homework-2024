@@ -52,9 +52,15 @@ float pitchFeedForward(float in)
 	MotorAnglePitch motorPitch(&gm6020_v, &pidPitchSpeed, &pidPitchAngle, pitchFeedForward, -62.5, 0);
 // }
 
+PID pidYawSpeed(new PIDInitializer{0, 0, 0, 25000, 25000, 25000});
+PID pidYawAngle(new PIDInitializer{0, 0, 0, 25000, 25000, 25000});
+
+MotorAngle motorYaw(&gm6020_v, &pidPitchSpeed, &pidPitchAngle);
+
 void gimbalTaskInit()
 {
 	motorSet.Append(&motorPitch, 1, 5);
+	motorSet.Append(&motorYaw, 1, 7);
 }
 void gimbalTaskRoutine()
 {
@@ -66,6 +72,7 @@ void gimbalTaskRoutine()
 	else if(mainTick == 200)
 	{
 		motorPitch.zeroSet();
+		motorYaw.zeroSet();
 		for(auto motorPtr : motorSet)
 			motorPtr->Start();
 	}
