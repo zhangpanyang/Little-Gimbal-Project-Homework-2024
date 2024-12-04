@@ -42,10 +42,6 @@ void BMI088ReadMultipleByte(GPIO_TypeDef* ssPort, uint8_t ssPin, uint8_t reg, ui
 	HAL_GPIO_WritePin(ssPort, ssPin, GPIO_PIN_RESET);
 	BMI088TransmitByte(reg | 0x80);
 	BMI088ReceiveMultipleBytes(rxData, length);
-	// for (uint8_t i = 0; i < length; i++)
-	// {
-	// 	BMI088ReceiveByte( rxData + i );
-	// }
 	HAL_GPIO_WritePin(ssPort, ssPin, GPIO_PIN_SET);
 }
 
@@ -55,14 +51,14 @@ float linearMapping(int32_t in, int32_t inMin, int32_t inMax, float outMin, floa
 }
 
 imuAccelTypedef imuAccel;
-uint8_t accData[6];
+uint8_t accData[6+1];
 
 void BMI088ReadAccel()
 {
-	BMI088ReadMultipleByte(CS1_GYRO_GPIO_Port, CS1_GYRO_Pin, RATE_DATA_START_REG, accData, 6);
-	int16_t accelXInt16 = (int16_t)(accData[1] << 8 | accData[0]);
-	int16_t accelYInt16 = (int16_t)(accData[3] << 8 | accData[2]);
-	int16_t accelZInt16 = (int16_t)(accData[5] << 8 | accData[4]);
+	BMI088ReadMultipleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, ACC_DATA_START_REG, accData, 6+1);
+	int16_t accelXInt16 = (int16_t)(accData[2] << 8 | accData[1]);
+	int16_t accelYInt16 = (int16_t)(accData[4] << 8 | accData[3]);
+	int16_t accelZInt16 = (int16_t)(accData[6] << 8 | accData[5]);
 	imuAccel.accelX = linearMapping(accelXInt16, -32767, 32767, -12, 12);
 	imuAccel.accelY = linearMapping(accelYInt16, -32767, 32767, -12, 12);
 	imuAccel.accelZ = linearMapping(accelZInt16, -32767, 32767, -12, 12);

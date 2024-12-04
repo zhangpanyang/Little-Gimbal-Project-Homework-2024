@@ -41,6 +41,9 @@ struct imuGyroTypedef
 	float rateZ;
 };
 
+extern imuAccelTypedef imuAccel;
+extern imuGyroTypedef imuGyro;
+
 #define ACC_DATA_START_REG 0x12
 #define RATE_DATA_START_REG 0x02
 #define ACC_RANGE_REG 0x41

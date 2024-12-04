@@ -6,6 +6,7 @@
 #define GINBALTASK_H
 
 #include "motorDevice.h"
+#include "imuDevice.h"
 #include "cppMain.h"
 
 class MotorAnglePitch : public MotorAngle
