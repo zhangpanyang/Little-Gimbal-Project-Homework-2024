@@ -52,10 +52,11 @@ float pitchFeedForward(float in)
 	MotorAnglePitch motorPitch(&gm6020_v, &pidPitchSpeed, &pidPitchAngle, pitchFeedForward, -62.5, 0);
 // }
 
-PID pidYawSpeed(new PIDInitializer{0, 0, 0, 25000, 25000, 25000});
-PID pidYawAngle(new PIDInitializer{0, 0, 0, 25000, 25000, 25000});
+PID pidYawSpeed(new PIDInitializer{150, 0, 0, 25000, 25000, 25000});
+PID pidYawAngle(new PIDInitializer{7, 0.01, 0, 25000, 25000, 25000});
 
-MotorAngle motorYaw(&gm6020_v, &pidPitchSpeed, &pidPitchAngle);
+MotorAngle motorYaw(&gm6020_v, &pidYawSpeed, &pidYawAngle);
+float debugAngleYaw = 0;
 
 void gimbalTaskInit()
 {
@@ -64,6 +65,7 @@ void gimbalTaskInit()
 }
 void gimbalTaskRoutine()
 {
+	debugAngleYaw = motorYaw.state.angle;
 	if(mainTick < 200)
 	{
 		for(auto motorPtr : motorSet)
