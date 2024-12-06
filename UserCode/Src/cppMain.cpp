@@ -23,13 +23,13 @@ void mainTaskInit()
 {
 	remoteControlTaskInit();
 	gimbalTaskInit();
-	imuDeviceInit();
 }
 
 void mainDeviceRoutine()
 {
 	motorDeviceRoutine();
 	canDeviceRoutine();
+	imuDeviceInit();
 	HAL_IWDG_Refresh(&hiwdg);
 }
 

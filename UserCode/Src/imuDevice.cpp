@@ -26,25 +26,31 @@ void BMI088ReceiveMultipleBytes(uint8_t* rxData, uint8_t length)
 void BMI088WriteSingleByte(GPIO_TypeDef* ssPort, uint8_t ssPin, uint8_t reg, uint8_t txData)
 {
 	HAL_GPIO_WritePin(ssPort, ssPin, GPIO_PIN_RESET);
+	// HAL_Delay(5);
 	BMI088TransmitByte(reg | 0x00);
 	BMI088TransmitByte(txData);
 	HAL_GPIO_WritePin(ssPort, ssPin, GPIO_PIN_SET);
+	// HAL_Delay(5);
 }
 
 void BMI088ReadSingleByte(GPIO_TypeDef* ssPort, uint8_t ssPin, uint8_t reg, uint8_t* rxData)
 {
 	HAL_GPIO_WritePin(ssPort, ssPin, GPIO_PIN_RESET);
+	// HAL_Delay(5);
 	BMI088TransmitByte(reg | 0x80);
 	BMI088ReceiveByte(rxData);
 	HAL_GPIO_WritePin(ssPort, ssPin, GPIO_PIN_SET);
+	// HAL_Delay(5);
 }
 
 void BMI088ReadMultipleByte(GPIO_TypeDef* ssPort, uint8_t ssPin, uint8_t reg, uint8_t* rxData, uint8_t length)
 {
 	HAL_GPIO_WritePin(ssPort, ssPin, GPIO_PIN_RESET);
+	// HAL_Delay(5);
 	BMI088TransmitByte(reg | 0x80);
 	BMI088ReceiveMultipleBytes(rxData, length);
 	HAL_GPIO_WritePin(ssPort, ssPin, GPIO_PIN_SET);
+	// HAL_Delay(5);
 }
 
 float linearMapping(int32_t in, int32_t inMin, int32_t inMax, float outMin, float outMax)
@@ -84,7 +90,6 @@ void BMI088ReadGyro()
 
 void BMI088Init()
 {
-	if(chipID == 0) return;
 	BMI088WriteSingleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, ACC_RANGE_REG, ACC_RANGE_6G);
 }
 
