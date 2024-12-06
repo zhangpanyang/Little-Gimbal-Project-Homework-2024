@@ -3,6 +3,7 @@
 //
 
 #include "imuDevice.h"
+#include "pidTools.h"
 #include "spi.h"
 #include <cmath>
 
@@ -87,8 +88,23 @@ void BMI088Init()
 }
 
 attitudeTypedef attitude;
+attitudeTypedef rateAtt;
+attitudeTypedef lastRateAtt;
 
 const float imuTimePeriod = 0.001f;
+
+PIDInitializer imuPidInitializer
+{
+	.Kp = 0.0f,
+	.Ki = 0.0f,
+	.Kd = 0.0f,
+	.outputMax = 0.1f,
+	.pMax = 0.1f,
+	.integralMax = 0.0f
+};
+PID pidImuRoll(&imuPidInitializer);
+PID pidImuPitch(&imuPidInitializer);
+
 void ImuRoutine()
 {
 	BMI088ReadAccel();
@@ -98,17 +114,20 @@ void ImuRoutine()
 	float sr = sinf(attitude.roll), cr = cosf(attitude.roll);
 	float sp = sinf(attitude.pitch), cp = cosf(attitude.pitch);
 	float sy = sinf(attitude.yaw), cy = cosf(attitude.yaw);
-	float dr = imuGyro.rateX + imuGyro.rateY * sp*sr/cp + imuGyro.rateZ * cr*sp/cp;
-	float dp = imuGyro.rateY * cr - imuGyro.rateZ * sr;
-	float dy = imuGyro.rateY * sr/cp + imuGyro.rateZ * cr/cp;
-	dr *= imuTimePeriod;
-	dp *= imuTimePeriod;
-	dy *= imuTimePeriod;
+	rateAtt.roll = imuGyro.rateX + imuGyro.rateY * sp*sr/cp + imuGyro.rateZ * cr*sp/cp;
+	rateAtt.pitch = imuGyro.rateY * cr - imuGyro.rateZ * sr;
+	rateAtt.yaw = imuGyro.rateY * sr/cp + imuGyro.rateZ * cr/cp;
 
 	// Accel Solve
 	float roll = atan2f(imuAccel.accelZ, imuAccel.accelY);
 	float pitch = -atan2f(imuAccel.accelX, sqrtf(imuAccel.accelY*imuAccel.accelY + imuAccel.accelZ*imuAccel.accelZ));
 
-	attitude.roll = roll;
-	attitude.pitch = pitch;
+	// update values
+	attitude.roll += (lastRateAtt.roll * 0.5f + rateAtt.roll * 0.5f) * imuTimePeriod;
+	attitude.roll += pidImuRoll.compute(roll, attitude.roll, imuTimePeriod);
+
+	attitude.pitch += (lastRateAtt.roll * 0.5f + rateAtt.roll * 0.5f) * imuTimePeriod;
+	attitude.pitch += pidImuPitch.compute(pitch, attitude.pitch, imuTimePeriod);
+
+	lastRateAtt = rateAtt;
 }
