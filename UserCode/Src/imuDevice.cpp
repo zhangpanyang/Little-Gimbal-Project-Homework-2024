@@ -3,11 +3,6 @@
 //
 
 #include "imuDevice.h"
-#include "pidTools.h"
-#include "spi.h"
-#include <cmath>
-
-#include "filterTools.h"
 
 void BMI088TransmitByte(uint8_t txData)
 {
@@ -118,7 +113,7 @@ PIDInitializer imuPidInitializer
 PID pidImuRoll(&imuPidInitializer);
 PID pidImuPitch(&imuPidInitializer);
 
-FilterMovingAverage filterRatePitch(5);
+FilterMovingAverage filterRatePitch(1);
 
 float testPitchRate;
 void ImuRoutine()

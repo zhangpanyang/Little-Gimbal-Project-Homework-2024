@@ -6,6 +6,10 @@
 #define IMUDEVICE_H
 
 #include "main.h"
+#include "pidTools.h"
+#include "spi.h"
+#include <cmath>
+#include "filterTools.h"
 
 void BMI088TransmitByte(uint8_t txData);
 
@@ -52,6 +56,7 @@ struct attitudeTypedef
 
 extern imuAccelTypedef imuAccel;
 extern imuGyroTypedef imuGyro;
+extern FilterMovingAverage filterRatePitch;
 
 #define ACC_DATA_START_REG 0x12
 #define RATE_DATA_START_REG 0x02

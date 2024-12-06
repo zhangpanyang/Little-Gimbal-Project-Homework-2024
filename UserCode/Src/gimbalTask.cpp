@@ -3,6 +3,7 @@
 //
 
 #include "ginbalTask.h"
+#include "imuDevice.h"
 
 MotorAnglePitch::MotorAnglePitch(motorType_t* pMotorType, PID* pPidSpeed, PID* pPidAngle, FeedForwardPtr pFeedForwardAngle, float pAngleMin, float pAngleMax):
 	MotorAngle(pMotorType, pPidSpeed, pPidAngle)
@@ -19,7 +20,7 @@ void MotorAnglePitch::updateControl()
 		return;
 	}
 	controlSpeed.targetValue = controlAngle.compute(state.angle, 0.001);
-	outputIntensity = controlSpeed.compute(state.speed, 0.001) + feedForwardAngle(state.angle);
+	outputIntensity = controlSpeed.compute(filterRatePitch.getResult(), 0.001) + feedForwardAngle(state.angle);
 }
 
 void MotorAnglePitch::setAngle(float angle)
@@ -46,10 +47,10 @@ float pitchFeedForward(float in)
 
 // namespace Gimbal
 // {
-	PID pidPitchSpeed(new PIDInitializer{0, 0, 0, 25000, 25000, 25000});
-	PID pidPitchAngle(new PIDInitializer{12, 0.03, 0, 25000, 25000, 1000});
+	PID pidPitchSpeed(new PIDInitializer{200, 0, 0, 25000, 25000, 25000});
+	PID pidPitchAngle(new PIDInitializer{50, 0.03, 0, 25000, 25000, 1000});
 
-	MotorAnglePitch motorPitch(&gm6020_v, &pidPitchSpeed, &pidPitchAngle, pitchFeedForward, -62.5, 0);
+	MotorAnglePitch motorPitch(&gm6020_v, &pidPitchSpeed, &pidPitchAngle, emptyFeedForward, -62.5, 0);
 // }
 
 PID pidYawSpeed(new PIDInitializer{150, 0, 0, 25000, 25000, 25000});
@@ -57,6 +58,7 @@ PID pidYawAngle(new PIDInitializer{7, 0.01, 0, 25000, 25000, 1000});
 
 MotorAngle motorYaw(&gm6020_v, &pidYawSpeed, &pidYawAngle);
 float debugAngleYaw = 0;
+float debugAnglePitch = 0;
 
 void gimbalTaskInit()
 {
@@ -67,6 +69,7 @@ void gimbalTaskRoutine()
 {
 	/** Debug Use **/
 	debugAngleYaw = motorYaw.state.angle;
+	debugAnglePitch = motorPitch.state.angle;
 	/** **/
 
 	ImuRoutine();
