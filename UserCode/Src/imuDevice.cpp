@@ -7,6 +7,8 @@
 #include "spi.h"
 #include <cmath>
 
+#include "filterTools.h"
+
 void BMI088TransmitByte(uint8_t txData)
 {
 	HAL_SPI_Transmit(&hspi1, &txData, 1, HAL_MAX_DELAY);
@@ -116,6 +118,9 @@ PIDInitializer imuPidInitializer
 PID pidImuRoll(&imuPidInitializer);
 PID pidImuPitch(&imuPidInitializer);
 
+FilterMovingAverage filterRatePitch(5);
+
+float testPitchRate;
 void ImuRoutine()
 {
 	BMI088ReadAccel();
@@ -134,11 +139,16 @@ void ImuRoutine()
 	float pitch = -atan2f(imuAccel.accelX, sqrtf(imuAccel.accelY*imuAccel.accelY + imuAccel.accelZ*imuAccel.accelZ));
 
 	// update values
-	attitude.roll += (lastRateAtt.roll * 0.5f + rateAtt.roll * 0.5f) * imuTimePeriod;
-	attitude.roll += pidImuRoll.compute(roll, attitude.roll, imuTimePeriod);
+	attitude.roll = roll*57.29578f;
+	// attitude.roll += (lastRateAtt.roll * 0.5f + rateAtt.roll * 0.5f) * imuTimePeriod;
+	// attitude.roll += pidImuRoll.compute(roll, attitude.roll, imuTimePeriod);
 
-	attitude.pitch += (lastRateAtt.roll * 0.5f + rateAtt.roll * 0.5f) * imuTimePeriod;
-	attitude.pitch += pidImuPitch.compute(pitch, attitude.pitch, imuTimePeriod);
+	attitude.pitch = pitch*57.29578f;
+	// attitude.pitch += (lastRateAtt.roll * 0.5f + rateAtt.roll * 0.5f) * imuTimePeriod;
+	// attitude.pitch += pidImuPitch.compute(pitch, attitude.pitch, imuTimePeriod);
+
+	filterRatePitch.push(rateAtt.pitch);
+	testPitchRate=filterRatePitch.getResult();
 
 	lastRateAtt = rateAtt;
 }

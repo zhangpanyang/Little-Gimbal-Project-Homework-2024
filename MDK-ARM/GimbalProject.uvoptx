@@ -220,37 +220,37 @@
         <Ww>
           <count>10</count>
           <WinNumber>1</WinNumber>
-          <ItemText>imuGyro</ItemText>
+          <ItemText>accData</ItemText>
         </Ww>
         <Ww>
           <count>11</count>
           <WinNumber>1</WinNumber>
-          <ItemText>accData</ItemText>
+          <ItemText>attitude</ItemText>
         </Ww>
         <Ww>
           <count>12</count>
           <WinNumber>1</WinNumber>
-          <ItemText>attitude</ItemText>
+          <ItemText>pidImuPitch</ItemText>
         </Ww>
         <Ww>
           <count>13</count>
           <WinNumber>1</WinNumber>
-          <ItemText>pidImuPitch</ItemText>
+          <ItemText>chipID</ItemText>
         </Ww>
         <Ww>
           <count>14</count>
           <WinNumber>1</WinNumber>
-          <ItemText>chipID</ItemText>
+          <ItemText>ssPort</ItemText>
         </Ww>
         <Ww>
           <count>15</count>
           <WinNumber>1</WinNumber>
-          <ItemText>ssPort</ItemText>
+          <ItemText>ssPin</ItemText>
         </Ww>
         <Ww>
           <count>16</count>
           <WinNumber>1</WinNumber>
-          <ItemText>ssPin</ItemText>
+          <ItemText>rateAtt</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>
@@ -838,6 +838,18 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\UserCode\Src\imuDevice.cpp</PathWithFileName>
       <FilenameWithoutPath>imuDevice.cpp</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>5</GroupNumber>
+      <FileNumber>42</FileNumber>
+      <FileType>8</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\UserCode\Src\filterTools.cpp</PathWithFileName>
+      <FilenameWithoutPath>filterTools.cpp</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

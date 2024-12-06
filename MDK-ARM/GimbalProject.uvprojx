@@ -1119,6 +1119,11 @@
               <FileType>8</FileType>
               <FilePath>..\UserCode\Src\imuDevice.cpp</FilePath>
             </File>
+            <File>
+              <FileName>filterTools.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>..\UserCode\Src\filterTools.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
