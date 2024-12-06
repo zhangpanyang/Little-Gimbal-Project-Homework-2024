@@ -4,6 +4,7 @@
 
 #include "imuDevice.h"
 #include "spi.h"
+#include <cmath>
 
 void BMI088TransmitByte(uint8_t txData)
 {
@@ -83,4 +84,31 @@ void BMI088Init()
 {
 	BMI088ReadMultipleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, 0x00, &chipID, 1);
 	BMI088WriteSingleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, ACC_RANGE_REG, ACC_RANGE_12G);
+}
+
+attitudeTypedef attitude;
+
+const float imuTimePeriod = 0.001f;
+void ImuRoutine()
+{
+	BMI088ReadAccel();
+	BMI088ReadGyro();
+
+	// Gyro Solve
+	float sr = sinf(attitude.roll), cr = cosf(attitude.roll);
+	float sp = sinf(attitude.pitch), cp = cosf(attitude.pitch);
+	float sy = sinf(attitude.yaw), cy = cosf(attitude.yaw);
+	float dr = imuGyro.rateX + imuGyro.rateY * sp*sr/cp + imuGyro.rateZ * cr*sp/cp;
+	float dp = imuGyro.rateY * cr - imuGyro.rateZ * sr;
+	float dy = imuGyro.rateY * sr/cp + imuGyro.rateZ * cr/cp;
+	dr *= imuTimePeriod;
+	dp *= imuTimePeriod;
+	dy *= imuTimePeriod;
+
+	// Accel Solve
+	float roll = atan2f(imuAccel.accelZ, imuAccel.accelY);
+	float pitch = -atan2f(imuAccel.accelX, sqrtf(imuAccel.accelY*imuAccel.accelY + imuAccel.accelZ*imuAccel.accelZ));
+
+	attitude.roll = roll;
+	attitude.pitch = pitch;
 }

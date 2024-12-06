@@ -41,6 +41,13 @@ struct imuGyroTypedef
 	float rateZ;
 };
 
+struct attitudeTypedef
+{
+	float roll;
+	float pitch;
+	float yaw;
+};
+
 extern imuAccelTypedef imuAccel;
 extern imuGyroTypedef imuGyro;
 
