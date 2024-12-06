@@ -25,7 +25,9 @@ void BMI088ReadAccel();
 
 void BMI088ReadGyro();
 
-void BMI088Init();
+void imuDeviceInit();
+
+void ImuRoutine();
 
 struct imuAccelTypedef
 {

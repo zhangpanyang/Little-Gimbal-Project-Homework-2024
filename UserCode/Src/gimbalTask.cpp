@@ -69,8 +69,8 @@ void gimbalTaskRoutine()
 	debugAngleYaw = motorYaw.state.angle;
 	/** **/
 
-	BMI088ReadAccel();
-	BMI088ReadGyro();
+	ImuRoutine();
+
 	if(mainTick < 200)
 	{
 		for(auto motorPtr : motorSet)

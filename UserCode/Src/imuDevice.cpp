@@ -55,15 +55,17 @@ float linearMapping(int32_t in, int32_t inMin, int32_t inMax, float outMin, floa
 imuAccelTypedef imuAccel;
 uint8_t accData[6+1];
 
+uint8_t chipID;
 void BMI088ReadAccel()
 {
-	BMI088ReadMultipleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, ACC_DATA_START_REG, accData, 6+1);
+	BMI088ReadMultipleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, 0x00, &chipID, 1);
+	BMI088ReadMultipleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, ACC_DATA_START_REG, accData, 7);
 	int16_t accelXInt16 = (int16_t)(accData[2] << 8 | accData[1]);
 	int16_t accelYInt16 = (int16_t)(accData[4] << 8 | accData[3]);
 	int16_t accelZInt16 = (int16_t)(accData[6] << 8 | accData[5]);
-	imuAccel.accelX = linearMapping(accelXInt16, -32767, 32767, -12, 12);
-	imuAccel.accelY = linearMapping(accelYInt16, -32767, 32767, -12, 12);
-	imuAccel.accelZ = linearMapping(accelZInt16, -32767, 32767, -12, 12);
+	imuAccel.accelX = linearMapping(accelXInt16, -32767, 32767, -6, 6);
+	imuAccel.accelY = linearMapping(accelYInt16, -32767, 32767, -6, 6);
+	imuAccel.accelZ = linearMapping(accelZInt16, -32767, 32767, -6, 6);
 }
 
 imuGyroTypedef imuGyro;
@@ -80,11 +82,15 @@ void BMI088ReadGyro()
 	imuGyro.rateZ = linearMapping(rateZInt16, -32767, 32767, -2000, 2000);
 }
 
-uint8_t chipID;
 void BMI088Init()
 {
-	BMI088ReadMultipleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, 0x00, &chipID, 1);
-	BMI088WriteSingleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, ACC_RANGE_REG, ACC_RANGE_12G);
+	if(chipID == 0) return;
+	BMI088WriteSingleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, ACC_RANGE_REG, ACC_RANGE_6G);
+}
+
+void imuDeviceInit()
+{
+	BMI088Init();
 }
 
 attitudeTypedef attitude;
