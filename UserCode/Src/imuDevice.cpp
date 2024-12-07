@@ -113,7 +113,7 @@ PIDInitializer imuPidInitializer
 PID pidImuRoll(&imuPidInitializer);
 PID pidImuPitch(&imuPidInitializer);
 
-FilterMovingAverage filterRatePitch(1);
+FilterMovingAverage filterRatePitch(10);
 
 float testPitchRate;
 void ImuRoutine()
