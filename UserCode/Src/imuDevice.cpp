@@ -7,7 +7,7 @@
 void BMI088TransmitByte(uint8_t txData)
 {
 	HAL_SPI_Transmit(&hspi1, &txData, 1, HAL_MAX_DELAY);
-	// while(HAL_SPI_GetState(&hspi1) == HAL_SPI_STATE_BUSY_TX);
+	while(HAL_SPI_GetState(&hspi1) == HAL_SPI_STATE_BUSY_TX);
 }
 
 void BMI088ReceiveByte(uint8_t* rxData)
@@ -87,6 +87,10 @@ void BMI088ReadGyro()
 
 void BMI088Init()
 {
+	BMI088WriteSingleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, 0x7F, 0xB6);
+	HAL_Delay(1);
+	BMI088WriteSingleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, 0x7D, 0x04);
+	HAL_Delay(1);
 	BMI088WriteSingleByte(CS1_ACCEL_GPIO_Port, CS1_ACCEL_Pin, ACC_RANGE_REG, ACC_RANGE_6G);
 }
 

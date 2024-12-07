@@ -17,6 +17,7 @@ void mainDeviceInit()
 	remoteControlDeviceInit();
 	canDeviceInit();
 	motorDeviceInit();
+	imuDeviceInit();
 }
 
 void mainTaskInit()
@@ -29,7 +30,6 @@ void mainDeviceRoutine()
 {
 	motorDeviceRoutine();
 	canDeviceRoutine();
-	imuDeviceInit();
 	HAL_IWDG_Refresh(&hiwdg);
 }
 
