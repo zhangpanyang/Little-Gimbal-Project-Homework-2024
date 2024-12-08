@@ -16,7 +16,19 @@ private:
 public:
 	uint32_t len_;
 
-	FilterMovingAverage(uint32_t len);
+	explicit FilterMovingAverage(uint32_t len);
+	void push(float value);
+	float getResult();
+};
+
+class FilterRcLinear
+{
+private:
+public:
+	float alpha_;
+	float output_;
+
+	explicit FilterRcLinear(float alpha);
 	void push(float value);
 	float getResult();
 };

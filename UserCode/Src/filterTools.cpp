@@ -27,3 +27,17 @@ float FilterMovingAverage::getResult()
 		return 0;
 	return sum_ / (float)valueQueue_.size();
 }
+
+FilterRcLinear::FilterRcLinear(float alpha)
+{
+	alpha_ = alpha;
+	output_ = 0;
+}
+void FilterRcLinear::push(float value)
+{
+	output_ = alpha_ * value + (1-alpha_) * output_;
+}
+float FilterRcLinear::getResult()
+{
+	return output_;
+}

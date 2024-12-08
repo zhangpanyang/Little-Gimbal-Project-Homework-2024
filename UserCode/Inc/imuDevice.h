@@ -54,6 +54,8 @@ struct attitudeTypedef
 	float yaw;
 };
 
+extern attitudeTypedef attitude;
+extern attitudeTypedef rateAtt;
 extern imuAccelTypedef imuAccel;
 extern imuGyroTypedef imuGyro;
 extern FilterMovingAverage filterRatePitch;

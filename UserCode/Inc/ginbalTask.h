@@ -8,6 +8,7 @@
 #include "motorDevice.h"
 #include "imuDevice.h"
 #include "cppMain.h"
+#include <cmath>
 
 class MotorAnglePitch : public MotorAngle
 {
@@ -22,6 +23,10 @@ public:
 	void updateControl() override;
 	void setAngle(float angle) override;
 	void addToAngle(float deltaAngle);
+	void zeroSetDelta(float delta);
+
+private:
+	float angleIntSmall;
 };
 
 void gimbalTaskInit();
