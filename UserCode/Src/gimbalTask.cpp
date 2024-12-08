@@ -52,17 +52,18 @@ float emptyFeedForward(float in)
 
 float pitchFeedForward(float in)
 {
+	return 4.9123e-5f*in*in*in*in*in -0.0014f*in*in*in*in -0.0288f*in*in*in +0.7605f*in*in -19.5551f*in -145.4815f;
+	// return 0.0027f*in*in*in +0.1765f*in*in -25.8155f*in -1.0886e+03f;
 	// return 4.2941e-04f*in*in*in -0.0919f*in*in -36.0257f*in -1.2199e+03f;
-	return 0.0027f*in*in*in +0.1765f*in*in -25.8155f*in -1.0886e+03f;
 	// return -0.0846f*in*in -32.9132f*in -1.1370e+03f;
 }
 
 // namespace Gimbal
 // {
-	PID pidPitchSpeed(new PIDInitializer{20, 0, 0, 25000, 25000, 25000});
-	PID pidPitchAngle(new PIDInitializer{80, 0.03, 0, 25000, 25000, 1000});
+	PID pidPitchSpeed(new PIDInitializer{0, 0, 0, 25000, 25000, 25000});
+	PID pidPitchAngle(new PIDInitializer{40, 0.03, 0, 25000, 25000, 1000});
 
-	MotorAnglePitch motorPitch(&gm6020_v, &pidPitchSpeed, &pidPitchAngle, emptyFeedForward, -62.5, 0);
+	MotorAnglePitch motorPitch(&gm6020_v, &pidPitchSpeed, &pidPitchAngle, pitchFeedForward, -62.5, 0);
 // }
 
 PID pidYawSpeed(new PIDInitializer{150, 0, 0, 25000, 25000, 25000});
@@ -98,6 +99,7 @@ void gimbalTaskRoutine()
 	else if(mainTick == 200)
 	{
 		motorPitch.zeroSet();
+		motorPitch.zeroSetDelta(attitude.pitch);
 		motorYaw.zeroSet();
 		for(auto motorPtr : motorSet)
 			motorPtr->Start();
