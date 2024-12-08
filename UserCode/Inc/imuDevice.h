@@ -58,7 +58,7 @@ extern attitudeTypedef attitude;
 extern attitudeTypedef rateAtt;
 extern imuAccelTypedef imuAccel;
 extern imuGyroTypedef imuGyro;
-extern FilterMovingAverage filterRatePitch;
+extern FilterRcLinear filterRatePitch;
 
 #define ACC_DATA_START_REG 0x12
 #define RATE_DATA_START_REG 0x02
